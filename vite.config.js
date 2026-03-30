@@ -7,7 +7,7 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/js/addon.js',
+                'resources/js/addon.js',   
                 'resources/css/addon.css'
             ],
             publicDirectory: 'resources/dist',
@@ -15,4 +15,8 @@ export default defineConfig({
         statamic(),
         tailwindcss(),
     ],
+    server: {
+        cors: /^https?:\/\/(?:(?:[^:]+\.)?localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/
+    },
+
 });
