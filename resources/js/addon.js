@@ -16,6 +16,7 @@ import CustomFormFieldText from './components/fieldtypes/CustomFormFieldText.vue
 import CustomFormFieldCheckboxes from './components/fieldtypes/CustomFormFieldCheckboxes.vue';
 import CustomFormFieldRadioButtons from './components/fieldtypes/CustomFormFieldRadioButtons.vue';
 import CustomFormFieldFileUpload from './components/fieldtypes/CustomFormFieldFileUpload.vue';
+import CustomFormFieldSwitch from './components/fieldtypes/CustomFormFieldSwitch.vue';
 
 
 
@@ -40,5 +41,6 @@ Statamic.booting(() => {
     Statamic.$components.register('input_checkboxes-fieldtype', CustomFormFieldCheckboxes);
     Statamic.$components.register('input_radio_buttons-fieldtype', CustomFormFieldRadioButtons);
     Statamic.$components.register('input_file_upload-fieldtype', CustomFormFieldFileUpload);
+    Statamic.$components.register('input_switch-fieldtype', CustomFormFieldSwitch);
 
 });
