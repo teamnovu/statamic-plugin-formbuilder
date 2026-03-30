@@ -182,6 +182,7 @@ return [
     ],
 
     'no_files' => 'Keine Dateien hochgeladen',
+    'no_text' => 'The user left this field empty',
     'view_folder' => 'Ordner ansehen',
     'open' => 'Öffnen',
     'open_in_cp' => 'In CP öffnen',

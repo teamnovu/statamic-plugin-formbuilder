@@ -181,6 +181,7 @@ return [
         ],
     ],
     'no_files' => 'Keine Dateien hochgeladen',
+    'no_text' => 'Der Benutzer hat dieses Feld leer gelassen',
     'view_folder' => 'Ordner ansehen',
     'open' => 'Öffnen',
     'open_in_cp' => 'In CP öffnen',
