@@ -12,6 +12,7 @@ class ServiceProvider extends AddonServiceProvider
     protected $vite = [ 
         'input' => [
             'resources/js/addon.js',
+            'resources/css/addon.css',
         ],
         'publicDirectory' => 'resources/dist',
     ]; 
@@ -58,5 +59,7 @@ class ServiceProvider extends AddonServiceProvider
         collect($allowedHandles)->each(static function (string $handle): void {
             FieldtypeRepository::makeSelectableInForms($handle);
         });
+
+       
     }
 }

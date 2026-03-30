@@ -1,39 +1,18 @@
 <template>
     <div class="form-data-display">
         <h3 class="text-base mb-2 custom-form-field-text">{{ displayLabel }}:</h3>
-        <div class="flex items-center gap-2 h-fit justify-between mb-2">
-            <div class="bg-gray-50 grow border border-gray-200 rounded px-4 py-2">
-                <div v-if="options.length > 0" class="text-sm text-gray-800">
-                    <ul class="list-none space-y-1.5">
-                        <li v-for="option in options" :key="option.key" class="flex items-center gap-2">
-                            <svg v-if="option.key === selectedValue" class="w-4 h-4 text-green-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2" />
-                                <circle cx="10" cy="10" r="4" />
-                            </svg>
-
-                            <svg v-else class="w-4 h-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 20 20">
-                                <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="2" />
-                            </svg>
-
-                            <span>{{ optionLabel(option) }}</span>
-                        </li>
-                    </ul>
-                </div>
-                <div v-else-if="selectedValue" class="text-sm text-gray-800">
-                    {{ selectedValue }}
-                </div>
-                <div v-else>
-                    -
-                </div>
-            </div>
-
-        </div>
+       
+        <RadioGroup :name="displayLabel" :label="displayLabel" :value="selectedValue">
+            <Radio :class="selectedValue === option.key ? '' : 'bg-gray-100 py-2 rounded'" class="px-2" :disabled="selectedValue === option.key" readonly v-for="option in options" :key="option.key" :label="optionLabel(option)" :value="option.key" :checked="selectedValue === option.key" />
+        </RadioGroup>
     </div>
 </template>
 
 <script setup>
 import { computed } from 'vue';
 import { Fieldtype } from '@statamic/cms';
+import { RadioGroup, Radio } from '@statamic/cms/ui';
+
 
 const props = defineProps(Fieldtype.props);
 

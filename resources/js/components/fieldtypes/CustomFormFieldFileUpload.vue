@@ -5,7 +5,7 @@
         </h3>
 
         <div class="flex items-center gap-2 h-fit justify-between mb-2">
-            <div class="bg-gray-50 grow border border-gray-200 rounded px-4 py-2">
+            <div class="bg-gray-100 grow rounded px-4 py-2">
                 <div v-if="hasFiles" class="space-y-3">
                     <div v-for="file in files" :key="file.path" class="flex items-start justify-between gap-3">
                         <div class="min-w-0">
