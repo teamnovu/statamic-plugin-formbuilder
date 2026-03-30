@@ -107,7 +107,7 @@ function optionLabel(option) {
 }
 </script>
 <style>
-.form-group:has(.custom-form-field-text) .field-inner {
+.form-group:has(.custom-form-field-text)  div[data-ui-field-text] label {
     display: none;
 }
 </style>
