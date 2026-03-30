@@ -1,5 +1,5 @@
 <template>
-    <div class="form-data-display" :style="hasFiles ? 'opacity: 1' : 'opacity: 0.4'">
+    <div class="form-data-display custom-form-field-text" :style="hasFiles ? 'opacity: 1' : 'opacity: 0.4'">
         <h3 class="text-base mb-2 custom-form-field-file-upload">
             {{ displayLabel }}:
         </h3>
@@ -165,8 +165,9 @@ function encodePath(path) {
         .join('/');
 }
 </script>
+
 <style>
-.form-group:has(.custom-form-field-file-upload) .field-inner {
+.form-group:has(.custom-form-field-text)  div[data-ui-field-text] label {
     display: none;
 }
 </style>

@@ -2,8 +2,8 @@
     <div class="form-data-display">
         <h3 class="text-base mb-2 custom-form-field-text">{{ displayLabel }}:</h3>
        
-        <RadioGroup :name="displayLabel" :label="displayLabel" :value="selectedValue">
-            <Radio :class="selectedValue === option.key ? '' : 'bg-gray-100 py-2 rounded'" class="px-2" :disabled="selectedValue === option.key" readonly v-for="option in options" :key="option.key" :label="optionLabel(option)" :value="option.key" :checked="selectedValue === option.key" />
+        <RadioGroup :name="displayLabel" :label="displayLabel"  v-model="selectedValue">
+            <Radio :class="selectedValue === option.key ? 'bg-gray-100 py-2 rounded' : ''" class="px-2"  readonly v-for="option in options" :key="option.key" :label="optionLabel(option)" :value="option.key" :checked="selectedValue === option.key" />
         </RadioGroup>
     </div>
 </template>
