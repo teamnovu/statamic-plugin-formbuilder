@@ -1,0 +1,43 @@
+{
+    "error": {
+        "404": "This page could not be found.",
+        "500": "An error occurred. Please try again later.",
+        "backToHomepage": "Back to homepage",
+        "component_error": "An error occurred in this component."
+    },
+    "language": {
+        "switch_language": "Switch language",
+        "select_language": "Select language:",
+        "de": "German",
+        "de_icon": "🇩🇪",
+        "fr": "French",
+        "fr_icon": "🇫🇷"
+    },
+    "form": {
+        "user_feedback": {
+            "error": {
+                "description": "The form could not be saved.",
+                "title": "Error"
+            },
+            "field_invalid": "No fields are filled. | The field {fields} is invalid. | The {count} fields {fields} are invalid.",
+            "field_validation": {
+                "email": "Invalid email address",
+                "invalid_format": "Invalid format",
+                "max_items": "Must have at most {n}} items",
+                "max_number": "Must be at most {n}",
+                "max_value": "Must be less than or equal to {n}",
+                "maxlength_characters": "Must be at most {n} characters",
+                "min_items": "Must have at least {n}} items",
+                "min_number": "Must be at least {n}",
+                "min_value": "Must be greater than or equal to {n}",
+                "minlength_characters": "Must be at least {n} characters",
+                "required": "This field is required",
+                "phone": "Invalid phone number"
+            },
+            "success": {
+                "description": "The form has been successfully saved.",
+                "title": "Successful"
+            }
+        }
+    }
+}

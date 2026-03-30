@@ -1,0 +1,37 @@
+{
+    "name": "teamnovu/formbuilder",
+    "autoload": {
+        "psr-4": {
+            "Teamnovu\\Formbuilder\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Teamnovu\\Formbuilder\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "statamic/cms": "^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.8"
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Formbuilder",
+            "description": "Formbuilder addon"
+        },
+        "laravel": {
+            "providers": [
+                "Teamnovu\\Formbuilder\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

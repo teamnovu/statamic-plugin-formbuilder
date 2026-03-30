@@ -1,0 +1,42 @@
+{
+    "error": {
+        "404": "La page n'a pas pu être trouvée.",
+        "500": "Une erreur est survenue. Veuillez réessayer plus tard.",
+        "backToHomepage": "Retour à la page d'accueil",
+        "component_error": "Une erreur est survenue dans ce composant."
+    },
+    "language": {
+        "switch_language": "Changer de langue",
+        "select_language": "Choisissez une langue :",
+        "de": "Allemand",
+        "de_icon": "🇩🇪",
+        "fr": "Français",
+        "fr_icon": "🇫🇷"
+    },
+    "form": {
+        "user_feedback": {
+            "error": {
+                "description": "Le formulaire n'a pas pu être enregistré.",
+                "title": "Erreur"
+            },
+            "field_invalid": "Aucun champ n'est rempli. | Le champ {fields} n'est pas valide. | Les champs {count}  {fields} ne sont pas valides.",
+            "field_validation": {
+                "email": "Adresse email invalide",
+                "invalid_format": "Format invalide",
+                "max_items": "Doit contenir au plus {n} éléments",
+                "max_number": "Doit être inférieur ou égal à {n}",
+                "max_value": "Doit être inférieur ou égal à {n}",
+                "maxlength_characters": "Doit contenir au plus {n} caractères",
+                "min_items": "Doit contenir au moins {n} éléments",
+                "min_number": "Doit être supérieur ou égal à {n}",
+                "min_value": "Doit être supérieur ou égal à {n}",
+                "minlength_characters": "Doit contenir au moins {n} caractères",
+                "required": "Ce champ est requis"
+            },
+            "success": {
+                "description": "Le formulaire a été enregistré avec succès.",
+                "title": "Réussir"
+            }
+        }
+    }
+}
