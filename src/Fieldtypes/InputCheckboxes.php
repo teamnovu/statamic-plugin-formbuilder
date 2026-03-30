@@ -82,7 +82,7 @@ class InputCheckboxes extends Fieldtype
                         'type' => 'grid',
                         'fields' => [
                             ['handle' => 'key', 'field' => ['type' => 'text']],
-                            ['handle' => 'text', 'field' => ['type' => 'translatable_bard']],
+                            ['handle' => 'text', 'field' => ['type' => 'translatable_input']],
                         ],
                     ],
 

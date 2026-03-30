@@ -20,13 +20,11 @@ import CustomFormFieldFileUpload from './components/fieldtypes/CustomFormFieldFi
 
 
 import TranslatableInput from './components/fieldtypes/TranslatableInput.vue';
-import TranslatableBard from './components/fieldtypes/TranslatableBard.vue';
 
 
 //form fieldtypes
 Statamic.booting(() => {
     Statamic.$components.register('translatable_input-fieldtype', TranslatableInput);
-    Statamic.$components.register('translatable_bard-fieldtype', TranslatableBard);
 
 
     Statamic.$components.register('input_email-fieldtype', CustomFormFieldText);
