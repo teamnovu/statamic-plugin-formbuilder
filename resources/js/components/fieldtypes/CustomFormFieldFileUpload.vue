@@ -20,7 +20,7 @@
                                 target="_blank"
                                 rel="noopener"
                             >
-                                Open
+                            {{__('formbuilder::form.open')}}
                             </a>
                             <a
                                 class="px-2 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
@@ -28,7 +28,7 @@
                                 target="_blank"
                                 rel="noopener"
                             >
-                                Open in CP
+                                {{__('formbuilder::form.open_in_cp')}}
                             </a>
                             <a
                                 class="px-2 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
@@ -36,13 +36,13 @@
                                 target="_blank"
                                 rel="noopener"
                             >
-                                View Folder
+                            {{__('formbuilder::form.view_folder')}}
                             </a>
                         </div>
                     </div>
                 </div>
                 <div v-else>
-                    The user left this field empty
+                   {{__('formbuilder::form.no_files')}}
                 </div>
             </div>
         </div>

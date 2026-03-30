@@ -180,6 +180,10 @@ return [
             'rule-name' => 'custom-message',
         ],
     ],
+    'no_files' => 'Keine Dateien hochgeladen',
+    'view_folder' => 'Ordner ansehen',
+    'open' => 'Öffnen',
+    'open_in_cp' => 'In CP öffnen',
 
     'attributes' => [],
 
