@@ -2,8 +2,9 @@
     <div class="form-data-display">
         <h3 class="text-base mb-2 custom-form-field-text">{{ displayLabel }}:</h3>
       
-        <CheckboxGroup :name="displayLabel" :label="displayLabel" v-model="selectedValue">
-            <Checkbox :class="selectedValue === option.key ? 'bg-gray-100 py-2 rounded' : ''" class="px-2"  readonly v-for="option in options" :key="option.key" :label="optionLabel(option)" :value="option.key"  />
+        
+        <CheckboxGroup :name="displayLabel" :label="displayLabel" v-model="convertSelectedValue">
+            <Checkbox :class="selectedValue.includes(option.key) ? 'bg-gray-100 py-2 rounded' : ''" class="px-2"  readonly v-for="option in options" :key="option.key" :label="optionLabel(option)" :value="option.key"  />
         </CheckboxGroup>
     </div>
 </template>
@@ -13,7 +14,7 @@ import { computed } from 'vue';
 import { Fieldtype } from '@statamic/cms';
 import { CheckboxGroup, Checkbox } from '@statamic/cms/ui';
 
-
+const convertSelectedValue = computed(() => (selectedValue.value ? selectedValue.value.split(',') : []));
 const props = defineProps(Fieldtype.props);
 
 const locale = computed(() => props.meta?.locale);
