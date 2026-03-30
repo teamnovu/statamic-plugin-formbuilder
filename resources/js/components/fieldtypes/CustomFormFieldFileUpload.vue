@@ -13,31 +13,16 @@
                             <p class="text-xs text-gray-600 break-all">{{ file.path }}</p>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
-                            <a
-                                v-if="file.publicUrl"
-                                class="px-2 py-1 text-xs font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
-                                :href="file.publicUrl"
-                                target="_blank"
-                                rel="noopener"
-                            >
-                            {{__('formbuilder::form.open')}}
-                            </a>
-                            <a
-                                class="px-2 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
-                                :href="file.cpAssetUrl"
-                                target="_blank"
-                                rel="noopener"
-                            >
-                                {{__('formbuilder::form.open_in_cp')}}
-                            </a>
-                            <a
-                                class="px-2 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
-                                :href="file.cpBrowseUrl"
-                                target="_blank"
-                                rel="noopener"
-                            >
-                            {{__('formbuilder::form.view_folder')}}
-                            </a>
+                           
+                            <ButtonGroup>
+                                <Button  v-if="file.publicUrl"
+                                :href="file.publicUrl" size="base" variant="primary"  text="Base" >{{__('formbuilder::form.open')}}</Button>  
+
+                                <Button  v-if="file.cpAssetUrl"
+                                :href="file.cpAssetUrl" size="base" variant="default"  text="Base" >{{__('formbuilder::form.open_in_cp')}}</Button> 
+                                <Button  v-if="file.cpBrowseUrl"
+                                :href="file.cpBrowseUrl" size="base" variant="default"  text="Base" >{{__('formbuilder::form.view_folder')}}</Button> 
+                            </ButtonGroup>
                         </div>
                     </div>
                 </div>
@@ -52,7 +37,7 @@
 <script setup>
 import { computed } from 'vue';
 import { Fieldtype } from '@statamic/cms';
-
+import { Button, ButtonGroup } from '@statamic/cms/ui';
 const props = defineProps(Fieldtype.props);
 
 const locale = computed(() => props.meta?.locale);
