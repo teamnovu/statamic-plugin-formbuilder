@@ -24,7 +24,7 @@
     "extra": {
         "statamic": {
             "name": "Formbuilder",
-            "description": "Formbuilder addon"
+            "description": "Formbuilder addon for Statamic CMS 6"
         },
         "laravel": {
             "providers": [
