@@ -15,7 +15,7 @@ return [
         'email' => 'Input Email',
         'file_upload' => 'Input File Upload',
         'number' => 'Input Number',
-        'telephone' => 'Input Telephone',
+        'phone' => 'Input Phone',
         'select' => 'Input Select',
         'slider' => 'Input Slider',
         'switch' => 'Input Switch',
@@ -24,6 +24,17 @@ return [
         'translatable_bard' => 'Translatable Bard',
         'translatable_input' => 'Translatable Input',
         'radio_buttons' => 'Input Radio Buttons',
+        'display_text' => 'Display Text',
+    ],
+
+    'display_title' => [
+        'display' => 'Title',
+        'instruction' => 'The title displayed to the user in the form.',
+    ],
+
+    'display_text' => [
+        'display' => 'Text',
+        'instruction' => 'The text displayed to the user in the form.',
     ],
 
     'label' => [
@@ -48,7 +59,7 @@ return [
 
     'floating_label' => [
         'display' => 'Floating Label',
-        'instruction' => 'This toggle will decide if the label is displayed inside the input field or not.',
+        'instruction' => 'When enabled, the label is displayed inside the input field and moves upward when the field is focused or filled. Replaces the placeholder text.',
     ],
 
     'character_limit' => [
@@ -156,7 +167,7 @@ return [
 
     'allowed_mimes' => [
         'display' => 'Allowed MIME Types',
-        'instruction' => 'Allowed MIME types (e.g. application/pdf, image/png).',
+        'instruction' => 'Allowed MIME types or file extensions (e.g. application/pdf, image/png, .pdf, .png).',
     ],
 
     'upload_container' => [
@@ -167,6 +178,21 @@ return [
     'upload_folder' => [
         'display' => 'Upload Folder',
         'instruction' => 'Relative folder inside the container for uploaded files.',
+    ],
+
+    'icon_label' => [
+        'display' => 'Icon Label',
+        'instruction' => 'This label will be displayed below the icon.',
+    ],
+
+    'label_deactivated' => [
+        'display' => 'Label when Deactivated',
+        'instruction' => 'This label will be displayed when the switch is deactivated.',
+    ],
+
+    'label_activated' => [
+        'display' => 'Label when Activated',
+        'instruction' => 'This label will be displayed when the switch is activated.',
     ],
 
     /*
@@ -181,12 +207,6 @@ return [
         ],
     ],
 
-    'no_files' => 'Keine Dateien hochgeladen',
-    'no_text' => 'The user left this field empty',
-    'view_folder' => 'Ordner ansehen',
-    'open' => 'Öffnen',
-    'open_in_cp' => 'In CP öffnen',
-    
     'attributes' => [],
 
 ];

@@ -9,164 +9,190 @@ return [
     */
 
     'title' => [
-        'checkboxes' => 'Input Checkboxen',
-        'date' => 'Input Datum',
-        'daterange' => 'Input Datumsbereich',
-        'email' => 'Input E-Mail',
-        'file_upload' => 'Input Datei-Upload',
-        'number' => 'Input Nummer',
-        'telephone' => 'Input Telefon',
-        'select' => 'Input Auswahl',
-        'slider' => 'Input Schieberegler',
-        'switch' => 'Input Schalter',
-        'text' => 'Input Text',
-        'textarea' => 'Input Textfeld',
-        'translatable_bard' => 'Übersetzbare Bard',
-        'translatable_input' => 'Übersetzbares Eingabefeld',
-        'radio_buttons' => 'Input Radiobuttons',
+        'checkboxes' => 'Form Input Checkboxes',
+        'date' => 'Form Input Date',
+        'daterange' => 'Form Input Date Range',
+        'email' => 'Form Input Email',
+        'file_upload' => 'Form Input File Upload',
+        'number' => 'Form Input Number',
+        'phone' => 'Form Input Phone',
+        'select' => 'Form Input Select',
+        'slider' => 'Form Input Slider',
+        'switch' => 'Form Input Switch',
+        'text' => 'Form Input Text',
+        'textarea' => 'Form Input Textarea',
+        'translatable_bard' => 'Translatable Bard',
+        'translatable_input' => 'Translatable Input',
+        'radio_buttons' => 'Form Input Radio Buttons',
+        'display_text' => 'Form Display Text',
+    ],
+
+    'display_title' => [
+        'display' => 'Title',
+        'instruction' => 'The title displayed to the user in the form.',
+    ],
+
+    'display_text' => [
+        'display' => 'Text',
+        'instruction' => 'The text displayed to the user in the form.',
     ],
 
     'label' => [
         'display' => 'Label',
-        'instruction' => 'Dies ist der Haupt-Label und wird oben über dem Eingabefeld angezeigt.',
+        'instruction' => 'This is the main label and will be displayed above the input field.',
     ],
 
     'hint' => [
-        'display' => 'Hinweistext',
-        'instruction' => 'Dies ist der Hinweis-Text und wird oben rechts neben dem Eingabefeld angezeigt.',
+        'display' => 'Hint text',
+        'instruction' => 'This is the hint message and will be displayed on the top right of the input field.',
     ],
 
     'help' => [
-        'display' => 'Hilfetext',
-        'instruction' => 'Dies ist der Hilfe-Text und wird unten neben dem Eingabefeld angezeigt.',
+        'display' => 'Helper Text',
+        'instruction' => 'This is the help message and will be displayed on the bottom of the input field.',
     ],
 
     'placeholder' => [
-        'display' => 'Platzhalter',
-        'instruction' => 'Dies ist der Platzhaltertext, der im Eingabefeld angezeigt wird, wenn kein Wert ausgewählt ist.',
+        'display' => 'Placeholder',
+        'instruction' => 'This is the placeholder text that will be displayed in the input field if no value is selected.',
     ],
 
     'floating_label' => [
-        'display' => 'Schwebendes Label',
-        'instruction' => 'Dieser Schalter bestimmt, ob das Label innerhalb des Eingabefeldes angezeigt wird oder nicht.',
+        'display' => 'Floating Label',
+        'instruction' => 'When enabled, the label is displayed inside the input field and moves upward when the field is focused or filled. Replaces the placeholder text.',
     ],
 
     'character_limit' => [
-        'display' => 'Zeichenlimit',
-        'instruction' => 'Dies ist das Zeichenlimit des Eingabefeldes.',
+        'display' => 'Character Limit',
+        'instruction' => 'This is the character limit of the input field.',
     ],
 
     'orientation' => [
-        'display' => 'Ausrichtung',
-        'instruction' => 'Die Ausrichtung der Checkboxen.',
+        'display' => 'Orientation',
+        'instruction' => 'The orientation of the checkboxes.',
         'horizontal' => 'Horizontal',
-        'vertical' => 'Vertikal',
+        'vertical' => 'Vertical',
     ],
 
     'variant' => [
-        'display' => 'Variante',
-        'instruction' => 'Der visuelle Stil der Checkbox/Radio-Optionen.',
-        'card' => 'Karte',
-        'list' => 'Liste',
-        'table' => 'Tabelle',
+        'display' => 'Variant',
+        'instruction' => 'The visual style of the checkbox/radio options.',
+        'card' => 'Card',
+        'list' => 'List',
+        'table' => 'Table',
     ],
 
     'indicator' => [
-        'display' => 'Indikator-Platzierung',
-        'instruction' => 'Die Platzierung des Checkbox/Radio-Indikators.',
-        'start' => 'Anfang',
-        'end' => 'Ende',
-        'hidden' => 'Versteckt',
+        'display' => 'Indicator Placement',
+        'instruction' => 'The placement of the checkbox/radio indicator.',
+        'start' => 'Start',
+        'end' => 'End',
+        'hidden' => 'Hidden',
     ],
 
     'multiple' => [
-        'display' => 'Mehrfachauswahl',
-        'instruction' => 'Dieser Schalter bestimmt, ob es sich um ein Mehrfachauswahlfeld handelt oder nicht.',
+        'display' => 'Multiple',
+        'instruction' => 'This toggle will decide if it is a multiple select field or not.',
     ],
 
     'options' => [
-        'display' => 'Optionen',
-        'instruction' => 'Dies sind die Auswahloptionen, die für das Eingabefeld verfügbar sind.',
+        'display' => 'Options',
+        'instruction' => 'This is the select options that are available for the input field.',
     ],
 
     'show_search' => [
-        'display' => 'Suche anzeigen',
-        'instruction' => 'Dieser Schalter bestimmt, ob im Auswahlfeld ein Suchfeld angezeigt wird oder nicht.',
+        'display' => 'Show Search',
+        'instruction' => 'This toggle will decide if in the select field there is a search input or not.',
     ],
 
     'show_country_code' => [
-        'display' => 'Ländercode anzeigen',
-        'instruction' => 'Dieser Schalter bestimmt, ob der Ländercode im Eingabefeld angezeigt wird oder nicht.',
+        'display' => 'Show Country Code',
+        'instruction' => 'This toggle will decide if the country code is displayed in the input field or not.',
     ],
 
     'default_country_code' => [
-        'display' => 'Standard-Ländercode',
-        'instruction' => 'Dies ist der Standard-Ländercode, der im Eingabefeld angezeigt wird, wenn kein Ländercode ausgewählt ist.',
+        'display' => 'Default Country Code',
+        'instruction' => 'This is the default country code and will be displayed in the input field if no country code is selected.',
     ],
 
     'show_country_code_selector' => [
-        'display' => 'Ländercode-Auswahl anzeigen',
-        'instruction' => 'Dieser Schalter bestimmt, ob die Ländercode-Auswahl im Eingabefeld angezeigt wird oder nicht.',
+        'display' => 'Show Country Code Selector',
+        'instruction' => 'This toggle will decide if the country code selector is displayed in the input field or not.',
     ],
 
     'country_code_selector' => [
-        'display' => 'Ländercode-Auswahl',
-        'instruction' => 'Dies ist die Ländercode-Auswahl, die im Eingabefeld angezeigt wird.',
+        'display' => 'Country Code Selector',
+        'instruction' => 'This is the country code selector and will be displayed in the input field if the country code selector is displayed.',
     ],
 
     'earliest_date' => [
-        'display' => 'Frühestes Datum',
-        'instruction' => 'Dies ist das früheste erlaubte Datum für das Eingabefeld.',
+        'display' => 'Earliest Date',
+        'instruction' => 'This is the earliest date and will be displayed in the input field if the earliest date is displayed.',
     ],
 
     'latest_date' => [
-        'display' => 'Spätestes Datum',
-        'instruction' => 'Dies ist das späteste erlaubte Datum für das Eingabefeld.',
+        'display' => 'Latest Date',
+        'instruction' => 'This is the latest date and will be displayed in the input field if the latest date is displayed.',
     ],
 
     'min' => [
         'display' => 'Minimum',
-        'instruction' => 'Dies ist der Minimalwert für das Eingabefeld.',
+        'instruction' => 'This is the minimum value allowed for the input field.',
     ],
 
     'max' => [
         'display' => 'Maximum',
-        'instruction' => 'Dies ist der Maximalwert für das Eingabefeld.',
+        'instruction' => 'This is the maximum value allowed for the input field.',
     ],
 
     'step' => [
-        'display' => 'Schrittweite',
-        'instruction' => 'Dies ist die Schrittweite für das Eingabefeld.',
+        'display' => 'Step',
+        'instruction' => 'This is the step size for the input field.',
     ],
 
     'default' => [
-        'display' => 'Standardwert',
-        'instruction' => 'Der Standardwert, der im Eingabefeld vorausgefüllt wird.',
+        'display' => 'Default Value',
+        'instruction' => 'The default value that will be pre-filled in the input field.',
     ],
 
     'max_files' => [
-        'display' => 'Maximale Dateien',
-        'instruction' => 'Maximale Anzahl Dateien, die hochgeladen werden dürfen.',
+        'display' => 'Maximum Files',
+        'instruction' => 'Maximum number of files allowed for this upload field.',
     ],
 
     'max_filesize' => [
-        'display' => 'Maximale Dateigrösse',
-        'instruction' => 'Maximale Dateigrösse pro Datei in Kilobytes.',
+        'display' => 'Maximum File Size',
+        'instruction' => 'Maximum file size per file in kilobytes.',
     ],
 
     'allowed_mimes' => [
-        'display' => 'Erlaubte MIME-Types',
-        'instruction' => 'Erlaubte MIME-Types (z.B. application/pdf, image/png).',
+        'display' => 'Allowed MIME Types',
+        'instruction' => 'Allowed MIME types or file extensions (e.g. application/pdf, image/png, .pdf, .png).',
     ],
 
     'upload_container' => [
-        'display' => 'Upload-Container',
-        'instruction' => 'Asset-Container Handle, in dem Dateien abgelegt werden.',
+        'display' => 'Upload Container',
+        'instruction' => 'Asset container handle where uploaded files will be stored.',
     ],
 
     'upload_folder' => [
-        'display' => 'Upload-Ordner',
-        'instruction' => 'Relativer Ordner im Container für hochgeladene Dateien.',
+        'display' => 'Upload Folder',
+        'instruction' => 'Relative folder inside the container for uploaded files.',
+    ],
+
+    'icon_label' => [
+        'display' => 'Icon Label',
+        'instruction' => 'This label will be displayed below the icon.',
+    ],
+
+    'label_deactivated' => [
+        'display' => 'Label when Deactivated',
+        'instruction' => 'This label will be displayed when the switch is deactivated.',
+    ],
+
+    'label_activated' => [
+        'display' => 'Label when Activated',
+        'instruction' => 'This label will be displayed when the switch is activated.',
     ],
 
     /*
@@ -180,11 +206,6 @@ return [
             'rule-name' => 'custom-message',
         ],
     ],
-    'no_files' => 'Keine Dateien hochgeladen',
-    'no_text' => 'Der Benutzer hat dieses Feld leer gelassen',
-    'view_folder' => 'Ordner ansehen',
-    'open' => 'Öffnen',
-    'open_in_cp' => 'In CP öffnen',
 
     'attributes' => [],
 

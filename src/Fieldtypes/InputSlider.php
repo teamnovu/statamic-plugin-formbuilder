@@ -45,18 +45,25 @@ class InputSlider extends Fieldtype
                         'display' => __('form.min.display'),
                         'instructions' => __('form.min.instruction'),
                         'type' => 'integer',
+                        'default' => 0,
                     ],
                     'max' => [
                         'display' => __('form.max.display'),
                         'instructions' => __('form.max.instruction'),
+                        'type' => 'integer',
+                        'default' => 100,
+                    ],
+                    'default' => [
+                        'display' => __('form.default.display'),
+                        'instructions' => __('form.default.instruction'),
                         'type' => 'integer',
                     ],
                     'step' => [
                         'display' => __('form.step.display'),
                         'instructions' => __('form.step.instruction'),
                         'type' => 'integer',
+                        'default' => 1,
                     ],
-
                 ],
             ],
             // [

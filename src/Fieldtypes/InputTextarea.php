@@ -56,6 +56,7 @@ class InputTextarea extends Fieldtype
                         'display' => __('form.floating_label.display'),
                         'instructions' => __('form.floating_label.instruction'),
                         'type' => 'toggle',
+                        'default' => true,
                         'force_in_config' => true,
                     ],
                 ],

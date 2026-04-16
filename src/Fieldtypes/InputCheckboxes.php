@@ -51,7 +51,8 @@ class InputCheckboxes extends Fieldtype
                             'horizontal' => __('form.orientation.horizontal'),
                             'vertical' => __('form.orientation.vertical'),
                         ],
-                        'default' => 'vertical',
+                        'default' => 'horizontal',
+                        'force_in_config' => true,
                     ],
                     'variant' => [
                         'display' => __('form.variant.display'),
@@ -63,6 +64,7 @@ class InputCheckboxes extends Fieldtype
                             'table' => __('form.variant.table'),
                         ],
                         'default' => 'list',
+                        'force_in_config' => true,
                     ],
                     'indicator' => [
                         'display' => __('form.indicator.display'),
@@ -74,6 +76,7 @@ class InputCheckboxes extends Fieldtype
                             'hidden' => __('form.indicator.hidden'),
                         ],
                         'default' => 'start',
+                        'force_in_config' => true,
                     ],
 
                     'options' => [
@@ -82,7 +85,7 @@ class InputCheckboxes extends Fieldtype
                         'type' => 'grid',
                         'fields' => [
                             ['handle' => 'key', 'field' => ['type' => 'text']],
-                            ['handle' => 'text', 'field' => ['type' => 'translatable_input']],
+                            ['handle' => 'text', 'field' => ['type' => 'translatable_bard']],
                         ],
                     ],
 

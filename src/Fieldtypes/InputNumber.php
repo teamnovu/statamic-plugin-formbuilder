@@ -31,11 +31,6 @@ class InputNumber extends Fieldtype
                         'instructions' => __('form.label.instruction'),
                         'type' => 'translatable_input',
                     ],
-                    'placeholder' => [
-                        'display' => __('form.placeholder.display'),
-                        'instructions' => __('form.placeholder.instruction'),
-                        'type' => 'translatable_input',
-                    ],
                     'hint' => [
                         'display' => __('form.hint.display'),
                         'instructions' => __('form.hint.instruction'),
@@ -50,11 +45,13 @@ class InputNumber extends Fieldtype
                         'display' => __('form.min.display'),
                         'instructions' => __('form.min.instruction'),
                         'type' => 'integer',
+                        'default' => 0,
                     ],
                     'max' => [
                         'display' => __('form.max.display'),
                         'instructions' => __('form.max.instruction'),
                         'type' => 'integer',
+                        'default' => 100,
                     ],
                     'default' => [
                         'display' => __('form.default.display'),
@@ -65,6 +62,7 @@ class InputNumber extends Fieldtype
                         'display' => __('form.step.display'),
                         'instructions' => __('form.step.instruction'),
                         'type' => 'integer',
+                        'default' => 1,
                     ],
 
                 ],

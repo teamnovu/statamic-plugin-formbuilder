@@ -47,28 +47,45 @@ class InputFileUpload extends Fieldtype
                         'instructions' => __('form.help.instruction'),
                         'type' => 'translatable_input',
                     ],
-                    'multiple' => [
-                        'display' => __('form.multiple.display'),
-                        'instructions' => __('form.multiple.instruction'),
-                        'type' => 'toggle',
-                        'default' => false,
+                    'icon_label' => [
+                        'display' => __('form.icon_label.display'),
+                        'instructions' => __('form.icon_label.instruction'),
+                        'type' => 'translatable_input',
                     ],
                     'max_files' => [
                         'display' => __('form.max_files.display'),
                         'instructions' => __('form.max_files.instruction'),
                         'type' => 'integer',
                         'default' => 1,
+                        'force_in_config' => true,
                     ],
                     'max_filesize' => [
                         'display' => __('form.max_filesize.display'),
                         'instructions' => __('form.max_filesize.instruction'),
                         'type' => 'integer',
+                        'default' => 10240, // 10 MB
+                        'force_in_config' => true,
                     ],
                     'allowed_mimes' => [
                         'display' => __('form.allowed_mimes.display'),
                         'instructions' => __('form.allowed_mimes.instruction'),
                         'type' => 'array',
                         'placeholder' => 'application/pdf',
+                        'default' => [
+                            '.jpg',
+                            '.png',
+                            '.gif',
+                            '.webp',
+                            '.svg',
+                            '.pdf',
+                            '.doc',
+                            '.docx',
+                            '.xls',
+                            '.xlsx',
+                            '.zip',
+                            '.mp4',
+                        ],
+                        'force_in_config' => true,
                     ],
                     'container' => [
                         'display' => __('form.upload_container.display'),
@@ -89,12 +106,30 @@ class InputFileUpload extends Fieldtype
 
     public function defaultValue(): mixed
     {
-        return $this->config('multiple') ? [] : null;
+        return $this->isMultiple() ? [] : null;
+    }
+
+    // Multi-file mode is determined solely by max_files > 1, which also controls
+    // whether the frontend submits a single value or an array.
+    private function isMultiple(): bool
+    {
+        return (int) $this->config('max_files', 1) > 1;
     }
 
     public function preProcess(mixed $data): mixed
     {
         return $data;
+    }
+
+    public function preProcessValidatable(mixed $value): mixed
+    {
+        // Multipart form submissions serialize JS null/undefined as the strings "null" / "undefined".
+        // Normalise them to PHP null so that the nullable rule and Rule::when() work correctly.
+        if (in_array($value, [null, '', 'null', 'undefined'], true)) {
+            return null;
+        }
+
+        return $value;
     }
 
     public function process(mixed $data): mixed
@@ -103,32 +138,35 @@ class InputFileUpload extends Fieldtype
             return $this->defaultValue();
         }
 
-        $files = collect(Arr::wrap($data))
-            ->filter(static fn ($file): bool => $file instanceof UploadedFile);
+        $isMultiple = $this->isMultiple();
+
+        $wrapped = Arr::wrap($data);
+        $files = collect($wrapped)->filter(static fn ($file): bool => $file instanceof UploadedFile);
 
         if ($files->isEmpty()) {
-            return $this->config('multiple') ? Arr::wrap($data) : Arr::first(Arr::wrap($data));
+            return $isMultiple ? $wrapped : Arr::first($wrapped);
         }
 
         $container = AssetContainerFacade::find($this->config('container', 'assets'));
 
         if (! $container) {
+            // Silently skip upload if the configured container doesn't exist.
+            // This avoids crashing form submissions due to a misconfigured blueprint.
             return $this->defaultValue();
         }
 
         $folder = $this->normalizedFolder();
         $limitedFiles = $this->limitFiles($files);
 
-        $storedPaths = $limitedFiles
-            ->map(function (UploadedFile $file) use ($container, $folder): string {
-                $this->ensureFileAllowed($file);
+        // Validate all files before uploading any to avoid partial uploads on failure.
+        $limitedFiles->each(fn (UploadedFile $file) => $this->ensureFileAllowed($file));
 
-                return $this->uploadFile($container, $folder, $file);
-            })
+        $storedPaths = $limitedFiles
+            ->map(fn (UploadedFile $file): string => $this->uploadFile($container, $folder, $file))
             ->values()
             ->all();
 
-        return $this->config('multiple') ? $storedPaths : ($storedPaths[0] ?? null);
+        return $isMultiple ? $storedPaths : ($storedPaths[0] ?? null);
     }
 
     public function preProcessIndex(mixed $value): mixed
@@ -151,22 +189,36 @@ class InputFileUpload extends Fieldtype
     public function rules(): array
     {
         $maxKilobytes = (int) $this->config('max_filesize', 0);
-        $allowedMimes = $this->allowedMimeList();
         $maxFiles = (int) $this->config('max_files', 0);
 
-        if ($this->config('multiple')) {
-            // Accept single or multiple uploads; enforce limits in processing.
-            return [];
+        if ($this->isMultiple()) {
+            $rules = ['sometimes', 'nullable', 'array'];
+
+            if ($maxFiles > 0) {
+                $rules[] = 'max:'.$maxFiles;
+            }
+
+            return $rules;
         }
 
-        $rules = ['file'];
+        $rules = ['sometimes', 'nullable', 'file'];
 
         if ($maxKilobytes > 0) {
             $rules[] = 'max:'.$maxKilobytes;
         }
 
-        if ($allowedMimes !== '') {
-            $rules[] = 'mimetypes:'.$allowedMimes;
+        // allowed_mimes supports both extensions (.jpg) and MIME types (image/jpeg).
+        // Each is applied as a separate Laravel rule (AND semantics), which works correctly
+        // for typical single-type configs. Mixed configs should use consistent types.
+        $extensions = $this->allowedExtensions();
+        $mimeTypes = $this->allowedMimeTypes();
+
+        if ($extensions !== []) {
+            $rules[] = 'mimes:'.implode(',', $extensions);
+        }
+
+        if ($mimeTypes !== []) {
+            $rules[] = 'mimetypes:'.implode(',', $mimeTypes);
         }
 
         return $rules;
@@ -175,7 +227,8 @@ class InputFileUpload extends Fieldtype
     private function ensureFileAllowed(UploadedFile $file): void
     {
         $maxKilobytes = (int) $this->config('max_filesize', 0);
-        $allowedMimes = $this->normalizedAllowedMimes();
+        $extensions = $this->allowedExtensions();
+        $mimeTypes = $this->allowedMimeTypes();
 
         if ($maxKilobytes > 0 && $file->getSize() > $maxKilobytes * 1024) {
             throw ValidationException::withMessages([
@@ -183,9 +236,18 @@ class InputFileUpload extends Fieldtype
             ]);
         }
 
-        if ($allowedMimes !== [] && ! in_array($file->getMimeType(), $allowedMimes, true)) {
+        if ($extensions === [] && $mimeTypes === []) {
+            return;
+        }
+
+        // OR semantics: the file is allowed if it matches any configured extension or MIME type.
+        $extensionAllowed = $extensions !== [] && in_array(strtolower($file->getClientOriginalExtension()), $extensions, true);
+        $mimeAllowed = $mimeTypes !== [] && in_array($file->getMimeType(), $mimeTypes, true);
+
+        if (! $extensionAllowed && ! $mimeAllowed) {
+            $all = array_merge(array_map(fn ($e) => '.'.$e, $extensions), $mimeTypes);
             throw ValidationException::withMessages([
-                $this->field()->handle() => __('validation.mimetypes', ['values' => implode(', ', $allowedMimes)]),
+                $this->field()->handle() => __('validation.mimetypes', ['values' => implode(', ', $all)]),
             ]);
         }
     }
@@ -206,14 +268,13 @@ class InputFileUpload extends Fieldtype
         $baseName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $extension = $file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'bin';
         $slug = Str::slug($baseName) ?: 'upload';
+        $makePath = fn (string $filename): string => $folder === '' ? $filename : "{$folder}/{$filename}";
+
+        $path = $makePath("{$slug}.{$extension}");
         $iteration = 1;
 
-        $filename = "{$slug}.{$extension}";
-        $path = $folder === '' ? $filename : "{$folder}/{$filename}";
-
         while ($container->asset($path)) {
-            $filename = "{$slug}-{$iteration}.{$extension}";
-            $path = $folder === '' ? $filename : "{$folder}/{$filename}";
+            $path = $makePath("{$slug}-{$iteration}.{$extension}");
             $iteration++;
         }
 
@@ -236,11 +297,25 @@ class InputFileUpload extends Fieldtype
         return $files;
     }
 
-    private function allowedMimeList(): string
+    private function allowedExtensions(): array
     {
-        return collect($this->normalizedAllowedMimes())->implode(',');
+        return collect($this->normalizedAllowedMimes())
+            ->reject(fn ($mime) => str_contains($mime, '/'))
+            ->map(fn ($mime) => ltrim($mime, '.'))
+            ->values()
+            ->all();
     }
 
+    private function allowedMimeTypes(): array
+    {
+        return collect($this->normalizedAllowedMimes())
+            ->filter(fn ($mime) => str_contains($mime, '/'))
+            ->values()
+            ->all();
+    }
+
+    // Normalizes allowed_mimes to a flat string array, accepting both array and
+    // comma-separated string formats as the config value may come in either form.
     private function normalizedAllowedMimes(): array
     {
         $mimes = $this->config('allowed_mimes');

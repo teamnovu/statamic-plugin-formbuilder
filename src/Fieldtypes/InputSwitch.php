@@ -48,7 +48,16 @@ class InputSwitch extends Fieldtype
                         'instructions' => __('form.default.instruction'),
                         'type' => 'toggle',
                     ],
-
+                    'label_deactivated' => [
+                        'display' => __('form.label_deactivated.display'),
+                        'instructions' => __('form.label_deactivated.instruction'),
+                        'type' => 'translatable_input',
+                    ],
+                    'label_activated' => [
+                        'display' => __('form.label_activated.display'),
+                        'instructions' => __('form.label_activated.instruction'),
+                        'type' => 'translatable_input',
+                    ],
                 ],
             ],
             // [

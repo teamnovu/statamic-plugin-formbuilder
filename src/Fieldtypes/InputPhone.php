@@ -4,7 +4,7 @@ namespace Teamnovu\Formbuilder\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
 
-class InputTelephone extends Fieldtype
+class InputPhone extends Fieldtype
 {
     protected $selectableInForms = true;
 
@@ -16,7 +16,7 @@ class InputTelephone extends Fieldtype
 
     public static function title()
     {
-        return __('formbuilder::form.title.telephone');
+        return __('form.title.phone');
     }
 
     protected function configFieldItems(): array
@@ -50,6 +50,7 @@ class InputTelephone extends Fieldtype
                         'display' => __('form.show_country_code.display'),
                         'instructions' => __('form.show_country_code.instruction'),
                         'type' => 'toggle',
+                        'force_in_config' => true,
                     ],
 
                     'default_country_code' => [
@@ -69,12 +70,6 @@ class InputTelephone extends Fieldtype
                         'display' => __('form.show_search.display'),
                         'instructions' => __('form.show_search.instruction'),
                         'type' => 'toggle',
-                    ],
-                    'floating_label' => [
-                        'display' => __('form.floating_label.display'),
-                        'instructions' => __('form.floating_label.instruction'),
-                        'type' => 'toggle',
-                        'default' => true,
                         'force_in_config' => true,
                     ],
                     'country_codes' => [
