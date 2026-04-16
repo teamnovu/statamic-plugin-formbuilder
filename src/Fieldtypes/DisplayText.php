@@ -7,6 +7,7 @@ use Statamic\Fields\Fieldtype;
 class DisplayText extends Fieldtype
 {
     protected $selectableInForms = true;
+    
     protected $selectable = false;
 
     protected $categories = ['text'];

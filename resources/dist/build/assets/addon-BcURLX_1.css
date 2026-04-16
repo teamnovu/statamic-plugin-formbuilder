@@ -1,0 +1,1 @@
+.form-group:has(.custom-form-field-text) div[data-ui-field-text] label{display:none}.form-group:has(.display-text-field-cp) .field-inner{display:none}
