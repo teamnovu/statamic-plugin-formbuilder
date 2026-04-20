@@ -48,7 +48,7 @@ class ServiceProvider extends AddonServiceProvider
         $allowedHandles = $fieldtypeClasses
             ->filter(static fn (string $class): bool => str_starts_with($class, 'Teamnovu\\Formbuilder\\Fieldtypes\\'))
             ->map(static fn (string $class): string => $class::handle())
-            ->filter(static fn (string $handle): bool => str_starts_with($handle, 'input_'))
+            ->filter(static fn (string $handle): bool => str_starts_with($handle, 'input_') || $handle === 'display_text')
             ->values()
             ->all();
 

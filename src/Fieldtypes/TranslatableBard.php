@@ -2,10 +2,12 @@
 
 namespace Teamnovu\Formbuilder\Fieldtypes;
 
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Collection;
 use Statamic\Facades\Site;
-use Statamic\Fields\Fieldtype;
+use Statamic\Fieldtypes\Bard;
 
-class TranslatableBard extends Fieldtype
+class TranslatableBard extends Bard
 {
     protected $selectableInForms = false;
 
@@ -63,7 +65,15 @@ class TranslatableBard extends Fieldtype
      */
     public function preProcess($data)
     {
-        return $data;
+        return collect($this->normalizeTranslatableValue($data))
+            ->filter(fn ($entry) => is_array($entry) && isset($entry['handle']))
+            ->map(function (array $entry) {
+                return [
+                    'handle' => $entry['handle'],
+                    'value' => parent::preProcess($entry['value'] ?? null),
+                ];
+            })
+            ->all();
     }
 
     /**
@@ -74,7 +84,15 @@ class TranslatableBard extends Fieldtype
      */
     public function process($data)
     {
-        return $data;
+        return collect($this->normalizeTranslatableValue($data))
+            ->filter(fn ($entry) => is_array($entry) && isset($entry['handle']))
+            ->map(function (array $entry) {
+                return [
+                    'handle' => $entry['handle'],
+                    'value' => parent::process($entry['value'] ?? null),
+                ];
+            })
+            ->all();
     }
 
     public function preProcessIndex($value)
@@ -96,10 +114,10 @@ class TranslatableBard extends Fieldtype
         // get all sites
         $sites = Site::all();
 
-        return [
+        return array_merge(parent::preload(), [
             'site' => $site,
             'sites' => $sites,
-        ];
+        ]);
     }
 
     /**
@@ -108,5 +126,79 @@ class TranslatableBard extends Fieldtype
     public function rules(): array
     {
         return [];
+    }
+
+    /**
+     * Normalize the stored value into the shape the CP fieldtype expects:
+     * an array of { handle: string, value: mixed }.
+     *
+     * Supports legacy/alternate shapes:
+     * - null
+     * - associative array keyed by site handle
+     * - already-normalized array of arrays
+     */
+    private function normalizeTranslatableValue($data): array
+    {
+        if ($data === null) {
+            return [];
+        }
+
+        if ($data instanceof Collection) {
+            $data = $data->all();
+        }
+
+        if ($data instanceof Arrayable) {
+            $data = $data->toArray();
+        }
+
+        if (! is_array($data) && is_object($data) && method_exists($data, 'value')) {
+            $data = $data->value();
+        }
+
+        if (is_string($data)) {
+            $decoded = json_decode($data, true);
+
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $data = $decoded;
+            }
+        }
+
+        if (! is_array($data)) {
+            return [];
+        }
+
+        $isSequential = array_is_list($data);
+
+        if (! $isSequential) {
+            // Associative array keyed by site handle.
+            return collect($data)
+                ->map(function ($value, $handle) {
+                    return [
+                        'handle' => (string) $handle,
+                        'value' => $value,
+                    ];
+                })
+                ->values()
+                ->all();
+        }
+
+        // Sequential array. Attempt to keep entries with handle/value.
+        return collect($data)
+            ->filter(fn ($entry) => is_array($entry))
+            ->map(function (array $entry) {
+                $handle = $entry['handle'] ?? null;
+
+                if (! is_string($handle) || $handle === '') {
+                    return null;
+                }
+
+                return [
+                    'handle' => $handle,
+                    'value' => $entry['value'] ?? null,
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
     }
 }

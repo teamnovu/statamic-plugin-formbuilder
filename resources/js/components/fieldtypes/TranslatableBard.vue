@@ -3,37 +3,38 @@
         <div class="flex gap-4 flex-col">
             <div v-for="site in sitesList" :key="site?.handle">
                 <label
-                    :for="`${site?.handle}`"
+                    :for="`field_${props.handle}-${site?.handle}`"
                     class="publish-field-label mb-1"
                 >
                     {{ site?.name }}:
                 </label>
-                <bard-fieldtype
-                    :key="nestedHandle(site?.handle)"
-                    :handle="site?.handle"
-                    :value="valueForSite(site?.handle)"
-                    :config="props.config"
-                    :meta="props.meta"
-                    :name-prefix="props.name"
-                    :field-path-prefix="props.handle"
-                    @input="onInput(site?.handle, $event)"
-                />
-       
 
-             
+                <bard-fieldtype
+                    :id="`field_${props.handle}-${site?.handle}`"
+                    :handle="`${props.handle}__${site?.handle}`"
+                    :config="bardConfig"
+                    :meta="props.meta"
+                    :value="valueForSite(site?.handle)"
+                    :read-only="isReadOnly"
+                    @update:value="onBardUpdate(site?.handle, $event)"
+                    @update:meta="emit('update:meta', $event)"
+                    @focus="emit('focus')"
+                    @blur="emit('blur')"
+                />
             </div>
         </div>
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue';
 import { Fieldtype } from '@statamic/cms';
 
-
 const emit = defineEmits(Fieldtype.emits);
 const props = defineProps(Fieldtype.props);
-const { name, isReadOnly, update, updateDebounced } = Fieldtype.use(emit, props);
+const { isReadOnly, update, updateDebounced } = Fieldtype.use(emit, props);
+
+const ENABLED_BUTTONS = ['h3', 'bold', 'italic', 'anchor'];
 
 const sitesList = computed(() => {
     const sites = props.meta?.sites;
@@ -49,15 +50,24 @@ const sitesList = computed(() => {
     return [];
 });
 
+const bardConfig = computed(() => ({
+    ...(props.config ?? {}),
+    buttons: ENABLED_BUTTONS,
+    toolbar_mode: 'fixed',
+    sets: [],
+    fullscreen: false,
+    inline: false,
+    save_html: false,
+    word_count: false,
+    character_limit: 0,
+    reading_time: false,
+}));
+
 const normalizedValue = computed(() => (Array.isArray(props.value) ? props.value : []));
 
-function valueForSite(siteHandle: string) {
+function valueForSite(siteHandle) {
     const siteValue = normalizedValue.value.find((entry) => entry?.handle === siteHandle);
-    return siteValue?.value ?? '';
-}
-
-function nestedHandle(siteHandle: string) {
-    return `${props.handle}-${siteHandle}`;
+    return Array.isArray(siteValue?.value) ? siteValue.value : [];
 }
 
 function commitValue(nextValue) {
@@ -69,30 +79,24 @@ function commitValue(nextValue) {
     update(nextValue);
 }
 
-function onInput(siteHandle: string, inputValue: string ) {
-    const nextValue = normalizedValue.value.map((entry) => {
-        if (entry?.handle !== siteHandle) {
-            return entry;
-        }
+function onBardUpdate(siteHandle, bardValue) {
+    const base = normalizedValue.value;
+    const hasEntry = base.some((entry) => entry?.handle === siteHandle);
 
-        return {
-            ...entry,
-            value: inputValue,
-        };
-    });
+    const nextValue = hasEntry
+        ? base.map((entry) =>
+              entry?.handle === siteHandle
+                  ? { ...entry, value: bardValue }
+                  : entry,
+          )
+        : [
+              ...base,
+              {
+                  handle: siteHandle,
+                  value: bardValue,
+              },
+          ];
 
-    const hasSiteValue = nextValue.some((entry) => entry?.handle === siteHandle);
-
-    commitValue(
-        hasSiteValue
-            ? nextValue
-            : [
-                ...nextValue,
-                {
-                    handle: siteHandle,
-                    value: inputValue,
-                },
-            ]
-    );
+    commitValue(nextValue);
 }
 </script>
