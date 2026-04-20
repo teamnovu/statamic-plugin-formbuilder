@@ -4,7 +4,9 @@
       
         
         <CheckboxGroup :name="displayLabel" :label="displayLabel" v-model="convertSelectedValue">
-            <Checkbox :class="selectedValue.includes(option.key) ? 'bg-gray-100 py-2 rounded' : ''" class="px-2"  readonly v-for="option in options" :key="option.key" :label="optionLabel(option)" :value="option.key"  />
+            <Checkbox :class="selectedValue.includes(option.key) ? 'bg-gray-100 py-2 rounded' : ''" class="px-2"  readonly v-for="option in options" :key="option.key" :label="optionLabel(option)" :value="option.key"  >
+                <div class="[&_a]:font-bold [&_a]:text-blue-500 [&_a]:underline" v-html="optionLabel(option)"></div>
+            </Checkbox>
         </CheckboxGroup>
     </div>
 </template>
