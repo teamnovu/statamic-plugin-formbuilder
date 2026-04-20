@@ -95,6 +95,11 @@ class TranslatableBard extends Bard
             ->all();
     }
 
+    protected function shouldSaveHtml()
+    {
+        return true;
+    }
+
     public function preProcessIndex($value)
     {
         return $value;
@@ -114,7 +119,18 @@ class TranslatableBard extends Bard
         // get all sites
         $sites = Site::all();
 
-        return array_merge(parent::preload(), [
+        // Bard::preload() expects the field's value to be a Bard node structure (each item has a `type` key).
+        // Our translatable value shape is different, so we call Bard::preload() with an empty value.
+        $originalField = $this->field;
+        $this->field = $originalField->newInstance()->setValue([]);
+
+        try {
+            $bardPreload = parent::preload();
+        } finally {
+            $this->field = $originalField;
+        }
+
+        return array_merge($bardPreload, [
             'site' => $site,
             'sites' => $sites,
         ]);

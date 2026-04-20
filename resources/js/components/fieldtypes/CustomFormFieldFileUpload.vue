@@ -13,8 +13,9 @@
                             <p class="text-xs text-gray-600 break-all">{{ file.path }}</p>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
-                           
-                            <ButtonGroup>
+                            
+                            
+                            <ButtonGroup v-if="file.fileName !== 'null' && (file.path !== 'null' )" >
                                 <Button  v-if="file.publicUrl"
                                 :href="file.publicUrl" size="base" variant="primary"  text="Base" >{{__('formbuilder::form.open')}}</Button>  
 
