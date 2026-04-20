@@ -21,8 +21,8 @@ return [
         'switch' => 'Input Schalter',
         'text' => 'Input Textfeld',
         'textarea' => 'Input Textbereich',
-        'translatable_bard' => 'Translatierbare Bard',
-        'translatable_input' => 'Translatierbare Eingabe',
+        'translatable_bard' => 'Übersetzbares Bard',
+        'translatable_input' => 'Übersetzbares Eingabefeld',
         'radio_buttons' => 'Input Radiobuttons',
         'display_text' => 'Anzeigetext',
     ],
@@ -206,6 +206,13 @@ return [
         ],
     ],
 
+ 
+    'no_text' => 'Kein Text ausgefüllt vom Benutzer',
+    'open' => 'Öffnen',
+    'open_in_cp' => 'In CP öffnen',
+    'view_folder' => 'Ordner ansehen',
+    'no_files' => 'Keine Dateien hochgeladen',
+    
     'attributes' => [],
 
 ];

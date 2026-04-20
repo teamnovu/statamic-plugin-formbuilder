@@ -207,6 +207,13 @@ return [
         ],
     ],
 
+  
+    'no_text' => 'No text filled by the user',
+    'open' => 'Open',
+    'open_in_cp' => 'Open in CP',
+    'view_folder' => 'View Folder',
+    'no_files' => 'No files uploaded',
+
     'attributes' => [],
 
 ];
