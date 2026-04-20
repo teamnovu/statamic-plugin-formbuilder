@@ -68,9 +68,11 @@ class TranslatableBard extends Bard
         return collect($this->normalizeTranslatableValue($data))
             ->filter(fn ($entry) => is_array($entry) && isset($entry['handle']))
             ->map(function (array $entry) {
+                $value = $entry['value'] ?? null;
+
                 return [
                     'handle' => $entry['handle'],
-                    'value' => parent::preProcess($entry['value'] ?? null),
+                    'value' => parent::preProcess(is_array($value) ? $value : []),
                 ];
             })
             ->all();
@@ -87,9 +89,11 @@ class TranslatableBard extends Bard
         return collect($this->normalizeTranslatableValue($data))
             ->filter(fn ($entry) => is_array($entry) && isset($entry['handle']))
             ->map(function (array $entry) {
+                $value = $entry['value'] ?? null;
+
                 return [
                     'handle' => $entry['handle'],
-                    'value' => parent::process($entry['value'] ?? null),
+                    'value' => parent::process(is_array($value) ? $value : []),
                 ];
             })
             ->all();
