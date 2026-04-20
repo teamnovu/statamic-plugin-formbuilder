@@ -1,16 +1,3 @@
-/**
- * When extending the control panel, be sure to uncomment the necessary code for your build process:
- * https://statamic.dev/extending/control-panel
- */
-/** Example Fieldtype
-import ExampleFieldtype from './components/fieldtypes/ExampleFieldtype.vue';
-Statamic.booting(() => {
-    Statamic.$components.register('example-fieldtype', ExampleFieldtype);
-});
-*/
-
-
-
 
 
 
@@ -20,19 +7,14 @@ import CustomFormFieldRadioButtons from './components/fieldtypes/CustomFormField
 import CustomFormFieldFileUpload from './components/fieldtypes/CustomFormFieldFileUpload.vue';
 import DisplayTextField from './components/fieldtypes/DisplayTextField.vue';
 
-
-
 import TranslatableInput from './components/fieldtypes/TranslatableInput.vue';
 import TranslatableBard from './components/fieldtypes/TranslatableBard.vue';
-
-Statamic.booting(() => {
-    Statamic.$components.register('translatable_input-fieldtype', TranslatableInput);
-    Statamic.$components.register('translatable_bard-fieldtype', TranslatableBard);
-});
 
 
 //form fieldtypes
 Statamic.booting(() => {
+    Statamic.$components.register('translatable_input-fieldtype', TranslatableInput);
+    Statamic.$components.register('translatable_bard-fieldtype', TranslatableBard);
 
     Statamic.$components.register('input_email-fieldtype', CustomFormFieldText);
     Statamic.$components.register('input_telephone-fieldtype', CustomFormFieldText);
