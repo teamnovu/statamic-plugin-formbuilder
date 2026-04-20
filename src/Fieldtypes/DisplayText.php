@@ -16,7 +16,7 @@ class DisplayText extends Fieldtype
 
     public static function title()
     {
-        return __('form.title.display_text');
+        return __('formbuilder::form.title.display_text');
     }
 
     protected function configFieldItems(): array
