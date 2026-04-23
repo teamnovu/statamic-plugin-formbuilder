@@ -5,6 +5,14 @@
             "Teamnovu\\Formbuilder\\": "src"
         }
     },
+    "authors": [
+        {
+            "name": "Janis Wanger"
+        },
+        {
+            "name": "Kyle Werner"
+        }
+    ],
     "autoload-dev": {
         "psr-4": {
             "Teamnovu\\Formbuilder\\Tests\\": "tests"
