@@ -65,17 +65,8 @@ class TranslatableBard extends Bard
      */
     public function preProcess($data)
     {
-        return collect($this->normalizeTranslatableValue($data))
-            ->filter(fn ($entry) => is_array($entry) && isset($entry['handle']))
-            ->map(function (array $entry) {
-                $value = $entry['value'] ?? null;
-
-                return [
-                    'handle' => $entry['handle'],
-                    'value' => parent::preProcess(is_array($value) ? $value : []),
-                ];
-            })
-            ->all();
+    
+        return $data;
     }
 
     /**
@@ -86,23 +77,10 @@ class TranslatableBard extends Bard
      */
     public function process($data)
     {
-        return collect($this->normalizeTranslatableValue($data))
-            ->filter(fn ($entry) => is_array($entry) && isset($entry['handle']))
-            ->map(function (array $entry) {
-                $value = $entry['value'] ?? null;
-
-                return [
-                    'handle' => $entry['handle'],
-                    'value' => parent::process(is_array($value) ? $value : []),
-                ];
-            })
-            ->all();
+       
+        return $data;
     }
 
-    protected function shouldSaveHtml()
-    {
-        return true;
-    }
 
     public function preProcessIndex($value)
     {
@@ -119,6 +97,7 @@ class TranslatableBard extends Bard
         // get the current user locale
         // $locale = app()->getLocale();
         $site = auth()->user()->preferredLocale();
+        
 
         // get all sites
         $sites = Site::all();
@@ -220,5 +199,40 @@ class TranslatableBard extends Bard
             ->filter()
             ->values()
             ->all();
+    }
+
+    /**
+     * Bard expects a sequential array of nodes (each with a `type` key).
+     * Statamic may hand us values as Collections/Arrayables/JSON strings depending on context.
+     */
+    private function normalizeBardValue($value): array
+    {
+        if ($value === null) {
+            return [];
+        }
+
+        if ($value instanceof Collection) {
+            return $value->all();
+        }
+
+        if ($value instanceof Arrayable) {
+            return $value->toArray();
+        }
+
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $decoded;
+            }
+
+            return [];
+        }
+
+        if (is_array($value)) {
+            return $value;
+        }
+
+        return [];
     }
 }
