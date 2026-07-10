@@ -1,0 +1,50 @@
+name: Create Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Add Repos
+        run: sudo LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
+
+      - name: Update Repos
+        run: sudo apt update
+
+      - name: Install PHP and Composer
+        run: sudo apt-get install php8.4 php8.4-xml composer
+
+      - name: Install composer dependencies
+        run: composer install
+
+      - name: Use pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: "^10.33.0"
+
+      - name: Install pnpm dependencies
+        run: pnpm install
+
+      - name: Compile assets
+        run: pnpm build
+
+      - name: Create zip
+        run: tar -czvf dist.tar.gz -C resources/dist build
+
+      - name: Upload zip to release
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./dist.tar.gz
+          asset_name: dist.tar.gz
+          asset_content_type: application/tar+gz
