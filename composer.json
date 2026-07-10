@@ -1,7 +1,7 @@
 {
     "name": "teamnovu/formbuilder",
     "description": "A curated, multilingual form builder for Statamic 6.",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "authors": [
         {
             "name": "Janis Wanger",
