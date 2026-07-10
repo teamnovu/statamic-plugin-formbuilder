@@ -1,0 +1,40 @@
+{
+    "name": "teamnovu/formbuilder",
+    "description": "A curated, multilingual form builder for Statamic 6.",
+    "type": "library",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Teamnovu\\Formbuilder\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Teamnovu\\Formbuilder\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "statamic/cms": "^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.8"
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Formbuilder",
+            "description": "Curated multilingual forms, localized emails, and CP submission views"
+        },
+        "laravel": {
+            "providers": [
+                "Teamnovu\\Formbuilder\\ServiceProvider"
+            ]
+        }
+    },
+    "prefer-stable": true
+}

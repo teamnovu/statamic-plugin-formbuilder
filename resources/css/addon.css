@@ -1,0 +1,2 @@
+@source "../js/**/*.vue";
+@import "@statamic/cms/tailwind.css";
