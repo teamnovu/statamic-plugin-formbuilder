@@ -1,6 +1,21 @@
 {
     "name": "teamnovu/formbuilder",
     "description": "A curated, multilingual form builder for Statamic 6.",
+    "version": "0.3.0",
+    "authors": [
+        {
+            "name": "Janis Wanger",
+            "email": "janis.wanger@novu.ch"
+        },
+        {
+            "name": "Kyle Werner",
+            "email": "kyle.werner@novu.ch"
+        },
+        {
+            "name": "Oguz Han Asnaz",
+            "email": "oguzhan.asnaz@novu.ch"
+        }
+    ],
     "type": "library",
     "license": "proprietary",
     "autoload": {
