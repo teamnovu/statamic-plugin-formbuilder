@@ -1,4 +1,4 @@
-# Team Novu Formbuilder
+# novu Formbuilder
 
 A Statamic 6 addon that turns the native form blueprint editor into a curated,
 multilingual form builder.
