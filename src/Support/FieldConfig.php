@@ -181,6 +181,9 @@ class FieldConfig
     /**
      * Shared label / optional placeholder / help / hint fields used by almost every input.
      *
+     * Help and hint are included when `formbuilder.show_help` / `formbuilder.show_hint`
+     * are enabled (default true).
+     *
      * @return array<string, array>
      */
     private static function baseFields(bool $placeholder = false): array
@@ -193,8 +196,13 @@ class FieldConfig
             $fields['placeholder'] = self::placeholder();
         }
 
-        $fields['help'] = self::help();
-        $fields['hint'] = self::hint();
+        if ((bool) config('formbuilder.show_help', true)) {
+            $fields['help'] = self::help();
+        }
+
+        if ((bool) config('formbuilder.show_hint', true)) {
+            $fields['hint'] = self::hint();
+        }
 
         return $fields;
     }

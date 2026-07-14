@@ -18,4 +18,10 @@ return [
 
     /* Enable floating labels. */
     'floating_label' => false,
+
+    /* Show helper text fields in the Control Panel field config. */
+    'show_help' => true,
+
+    /* Show hint text fields in the Control Panel field config. */
+    'show_hint' => true,
 ];

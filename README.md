@@ -40,6 +40,8 @@ return [
     'use_localized_email_job' => true,
     'resolve_statamic_links_in_graphql' => true,
     'floating_label' => false,
+    'show_help' => true,
+    'show_hint' => true,
 ];
 ```
 
@@ -50,6 +52,9 @@ needs native or third-party form fieldtypes as well.
 Set `floating_label` to `true` to enable floating labels for text, email, textarea,
 and select inputs. The toggle is hidden in the Control Panel; the value is still
 written into each field's config for the frontend.
+
+Set `show_help` or `show_hint` to `false` when the frontend does not support helper
+or hint text. Those fields are then omitted from every input's Control Panel config.
 
 ## Localized submissions and email
 

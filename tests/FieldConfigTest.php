@@ -43,6 +43,36 @@ class FieldConfigTest extends TestCase
         );
     }
 
+    public function test_create_items_omits_help_when_disabled(): void
+    {
+        config(['formbuilder.show_help' => false]);
+
+        $items = FieldConfig::createItems(placeholder: true);
+
+        $this->assertSame(['label', 'placeholder', 'hint'], array_keys($items[0]['fields']));
+    }
+
+    public function test_create_items_omits_hint_when_disabled(): void
+    {
+        config(['formbuilder.show_hint' => false]);
+
+        $items = FieldConfig::createItems(placeholder: true);
+
+        $this->assertSame(['label', 'placeholder', 'help'], array_keys($items[0]['fields']));
+    }
+
+    public function test_create_items_omits_help_and_hint_when_both_disabled(): void
+    {
+        config([
+            'formbuilder.show_help' => false,
+            'formbuilder.show_hint' => false,
+        ]);
+
+        $items = FieldConfig::createItems();
+
+        $this->assertSame(['label'], array_keys($items[0]['fields']));
+    }
+
     public function test_date_fieldtype_uses_create_items_without_extra_fields(): void
     {
         $fields = $this->configFields(InputDate::class);
