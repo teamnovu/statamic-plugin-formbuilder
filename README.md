@@ -22,15 +22,36 @@ blueprints, globals, and content remain application concerns.
 
 ```bash
 composer require teamnovu/formbuilder
+```
+
+Control Panel assets publish automatically after Statamic install under the
+`formbuilder` tag (`public/vendor/formbuilder`). To force-republish them:
+
+```bash
 php artisan vendor:publish --tag=formbuilder --force
 ```
+
+Publish config and/or email views when you need to customize them:
+
+```bash
+php artisan vendor:publish --tag=formbuilder-config
+php artisan vendor:publish --tag=formbuilder-views
+```
+
+| Tag | Destination |
+|-----|-------------|
+| `formbuilder` | `public/vendor/formbuilder` (CP assets) |
+| `formbuilder-config` | `config/formbuilder.php` |
+| `formbuilder-views` | `resources/views/vendor/formbuilder` |
+| `formbuilder-translations` | `lang/vendor/formbuilder` |
 
 For local development, point the consuming Statamic application's Composer path
 repository at this checkout.
 
 ## Configuration
 
-Publish `config/formbuilder.php` to change the defaults:
+Publish the config with `--tag=formbuilder-config`, then edit
+`config/formbuilder.php`:
 
 ```php
 return [
@@ -66,6 +87,9 @@ The bundled email views can be selected with:
 
 - `formbuilder::emails/user-submission`
 - `formbuilder::emails/submission`
+
+To customize those templates, publish them with `--tag=formbuilder-views`. Edits
+live under `resources/views/vendor/formbuilder` and override the addon views.
 
 ## Control Panel assets
 

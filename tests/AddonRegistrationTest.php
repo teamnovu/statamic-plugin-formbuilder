@@ -25,6 +25,24 @@ class AddonRegistrationTest extends TestCase
         $this->assertTrue(view()->exists('formbuilder::emails.submission'));
     }
 
+    public function test_it_registers_publishable_config_and_views(): void
+    {
+        $config = \Illuminate\Support\ServiceProvider::pathsToPublish(null, 'formbuilder-config');
+        $views = \Illuminate\Support\ServiceProvider::pathsToPublish(null, 'formbuilder-views');
+
+        $this->assertArrayHasKey(
+            realpath(__DIR__.'/../config/formbuilder.php'),
+            collect($config)->mapWithKeys(fn ($to, $from) => [realpath($from) => $to])->all()
+        );
+        $this->assertSame(config_path('formbuilder.php'), $config[array_key_first($config)]);
+
+        $this->assertArrayHasKey(
+            realpath(__DIR__.'/../resources/views'),
+            collect($views)->mapWithKeys(fn ($to, $from) => [realpath($from) => $to])->all()
+        );
+        $this->assertSame(resource_path('views/vendor/formbuilder'), $views[array_key_first($views)]);
+    }
+
     public function test_it_loads_namespaced_translations(): void
     {
         app()->setLocale('en');

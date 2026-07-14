@@ -45,6 +45,8 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon(): void
     {
+        $this->publishViews();
+
         if (config('formbuilder.use_localized_email_job')) {
             config(['statamic.forms.send_email_job' => SendFormEmail::class]);
         }
@@ -60,6 +62,13 @@ class ServiceProvider extends AddonServiceProvider
         if (config('formbuilder.extend_email_configuration')) {
             $this->registerEmailPreviewRoute();
         }
+    }
+
+    private function publishViews(): void
+    {
+        $this->publishes([
+            $this->getAddon()->directory().'resources/views' => resource_path('views/vendor/formbuilder'),
+        ], 'formbuilder-views');
     }
 
     private function limitFormFieldtypeSelector(): void
