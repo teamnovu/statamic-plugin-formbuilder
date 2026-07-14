@@ -11,6 +11,7 @@ use Statamic\GraphQL\TypeRegistrar as StatamicTypeRegistrar;
 use Statamic\Http\Controllers\CP\Forms\FormsController as StatamicFormsController;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
+use Teamnovu\Formbuilder\Console\Commands\PublishExampleFormCommand;
 use Teamnovu\Formbuilder\GraphQL\TypeRegistrar;
 use Teamnovu\Formbuilder\Http\Controllers\CP\FormEmailPreviewController;
 use Teamnovu\Formbuilder\Http\Controllers\CP\FormsController;
@@ -24,6 +25,10 @@ class ServiceProvider extends AddonServiceProvider
             'resources/css/addon.css',
         ],
         'publicDirectory' => 'resources/dist',
+    ];
+
+    protected $commands = [
+        PublishExampleFormCommand::class,
     ];
 
     protected $viewNamespace = 'formbuilder';

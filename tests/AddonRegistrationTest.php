@@ -25,6 +25,13 @@ class AddonRegistrationTest extends TestCase
         $this->assertTrue(view()->exists('formbuilder::emails.submission'));
     }
 
+    public function test_it_registers_the_publish_example_form_command(): void
+    {
+        $commands = \Illuminate\Support\Facades\Artisan::all();
+
+        $this->assertArrayHasKey('formbuilder:publish-example-form', $commands);
+    }
+
     public function test_it_registers_publishable_config_views_and_blueprints(): void
     {
         $config = \Illuminate\Support\ServiceProvider::pathsToPublish(null, 'formbuilder-config');

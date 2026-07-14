@@ -14,17 +14,25 @@ composer require teamnovu/formbuilder
 php artisan vendor:publish --tag=formbuilder-blueprints
 php artisan vendor:publish --tag=formbuilder-config   # optional
 php artisan vendor:publish --tag=formbuilder-views    # optional
+php artisan formbuilder:publish-example-form          # optional showcase form
 ```
 
-| Tag | Destination |
+| Tag / Command | Destination |
 |-----|-------------|
 | `formbuilder-blueprints` | `resources/blueprints/globals/form_builder.yaml` |
 | `formbuilder-config` | `config/formbuilder.php` |
 | `formbuilder-views` | `resources/views/vendor/formbuilder` |
 | `formbuilder-translations` | `lang/vendor/formbuilder` |
+| `formbuilder:publish-example-form` | Form + blueprint under configured Statamic paths |
 
 After publishing the blueprints, create a global set with handle `form_builder`
 and fill in the default button/status texts.
+
+The example form command reads the project's configured Statamic sites and
+writes a template form whose labels, hints, options, and other translatable
+values include an entry for each site. Paths come from
+`statamic.forms.forms` and `statamic.system.blueprints_path` (not hard-coded).
+Re-run with `--force` to overwrite.
 
 For local development, point the consuming Statamic application's Composer path
 repository at this checkout.
@@ -40,6 +48,7 @@ repository at this checkout.
 - Submission-site capture and locale resolution before Statamic sends email.
 - Optional GraphQL resolution for `statamic://` links stored in field config.
 - Ships a publishable `form_builder` global blueprint for default UI texts.
+- Optional `formbuilder:publish-example-form` showcase covering every fieldtype.
 
 The site still owns its frontend form component and the `form_builder` global
 set content.
