@@ -15,4 +15,7 @@ return [
 
     /* Resolve statamic:// references embedded in form field config returned by GraphQL. */
     'resolve_statamic_links_in_graphql' => true,
+
+    /* Enable floating labels. */
+    'floating_label' => false,
 ];

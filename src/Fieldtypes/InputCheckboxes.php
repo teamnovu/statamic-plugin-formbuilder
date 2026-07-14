@@ -3,6 +3,7 @@
 namespace Teamnovu\Formbuilder\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
+use Teamnovu\Formbuilder\Support\FieldConfig;
 
 class InputCheckboxes extends Fieldtype
 {
@@ -24,84 +25,12 @@ class InputCheckboxes extends Fieldtype
 
     protected function configFieldItems(): array
     {
-        return [
-            [
-                'display' => __('Input Behavior'),
-                'fields' => [
-                    'label' => [
-                        'display' => __('formbuilder::form.label.display'),
-                        'instructions' => __('formbuilder::form.label.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'help' => [
-                        'display' => __('formbuilder::form.help.display'),
-                        'instructions' => __('formbuilder::form.help.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'hint' => [
-                        'display' => __('formbuilder::form.hint.display'),
-                        'instructions' => __('formbuilder::form.hint.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'orientation' => [
-                        'display' => __('formbuilder::form.orientation.display'),
-                        'instructions' => __('formbuilder::form.orientation.instruction'),
-                        'type' => 'select',
-                        'options' => [
-                            'horizontal' => __('formbuilder::form.orientation.horizontal'),
-                            'vertical' => __('formbuilder::form.orientation.vertical'),
-                        ],
-                        'default' => 'horizontal',
-                        'force_in_config' => true,
-                    ],
-                    'variant' => [
-                        'display' => __('formbuilder::form.variant.display'),
-                        'instructions' => __('formbuilder::form.variant.instruction'),
-                        'type' => 'select',
-                        'options' => [
-                            'card' => __('formbuilder::form.variant.card'),
-                            'list' => __('formbuilder::form.variant.list'),
-                            'table' => __('formbuilder::form.variant.table'),
-                        ],
-                        'default' => 'list',
-                        'force_in_config' => true,
-                    ],
-                    'indicator' => [
-                        'display' => __('formbuilder::form.indicator.display'),
-                        'instructions' => __('formbuilder::form.indicator.instruction'),
-                        'type' => 'select',
-                        'options' => [
-                            'start' => __('formbuilder::form.indicator.start'),
-                            'end' => __('formbuilder::form.indicator.end'),
-                            'hidden' => __('formbuilder::form.indicator.hidden'),
-                        ],
-                        'default' => 'start',
-                        'force_in_config' => true,
-                    ],
-
-                    'options' => [
-                        'display' => __('formbuilder::form.options.display'),
-                        'instructions' => __('formbuilder::form.options.instruction'),
-                        'type' => 'grid',
-                        'fields' => [
-                            ['handle' => 'key', 'field' => ['type' => 'text']],
-                            ['handle' => 'text', 'field' => ['type' => 'translatable_bard']],
-                        ],
-                    ],
-
-                ],
-            ],
-            // [
-            //     'display' => 'Antlers',
-            //     'fields' => [
-            //         'antlers' => [
-            //             'display' => __('Allow Antlers'),
-            //             'instructions' => __('statamic::fieldtypes.any.config.antlers'),
-            //             'type' => 'toggle',
-            //         ],
-            //     ],
-            // ],
-        ];
+        return FieldConfig::createItems([
+            'orientation' => FieldConfig::orientation(),
+            'variant' => FieldConfig::variant(),
+            'indicator' => FieldConfig::indicator(),
+            'options' => FieldConfig::options(),
+        ]);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Teamnovu\Formbuilder\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
+use Teamnovu\Formbuilder\Support\FieldConfig;
 
 class InputTextarea extends Fieldtype
 {
@@ -23,46 +24,12 @@ class InputTextarea extends Fieldtype
 
     protected function configFieldItems(): array
     {
-        return [
-            [
-                'display' => __('Input Behavior'),
-                'fields' => [
-                    'label' => [
-                        'display' => __('formbuilder::form.label.display'),
-                        'instructions' => __('formbuilder::form.label.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'placeholder' => [
-                        'display' => __('formbuilder::form.placeholder.display'),
-                        'instructions' => __('formbuilder::form.placeholder.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'help' => [
-                        'display' => __('formbuilder::form.help.display'),
-                        'instructions' => __('formbuilder::form.help.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'hint' => [
-                        'display' => __('formbuilder::form.hint.display'),
-                        'instructions' => __('formbuilder::form.hint.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'character_limit' => [
-                        'display' => __('formbuilder::form.character_limit.display'),
-                        'instructions' => __('formbuilder::form.character_limit.instruction'),
-                        'type' => 'integer',
-                    ],
-                    'floating_label' => [
-                        'display' => __('formbuilder::form.floating_label.display'),
-                        'instructions' => __('formbuilder::form.floating_label.instruction'),
-                        'type' => 'toggle',
-                        'default' => true,
-                        'force_in_config' => true,
-                    ],
-                ],
-            ],
-        ];
+        return FieldConfig::createItems([
+            'character_limit' => FieldConfig::characterLimit(),
+            'floating_label' => FieldConfig::floatingLabel(),
+        ], placeholder: true);
     }
+
 
     /**
      * The blank/default value.

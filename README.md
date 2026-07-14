@@ -39,12 +39,17 @@ return [
     'capture_submission_site' => true,
     'use_localized_email_job' => true,
     'resolve_statamic_links_in_graphql' => true,
+    'floating_label' => false,
 ];
 ```
 
 `restrict_form_fieldtypes` deliberately hides every fieldtype except the addon's
 public form inputs from the form blueprint picker. Set it to `false` when a site
 needs native or third-party form fieldtypes as well.
+
+Set `floating_label` to `true` to enable floating labels for text, email, textarea,
+and select inputs. The toggle is hidden in the Control Panel; the value is still
+written into each field's config for the frontend.
 
 ## Localized submissions and email
 
