@@ -3,6 +3,32 @@
 A Statamic 6 addon that turns the native form blueprint editor into a curated,
 multilingual form builder.
 
+## Setup
+
+> [!IMPORTANT]
+> Publishing `formbuilder-blueprints` is required. Without it, the `form_builder`
+> global has no schema and default button/status texts cannot be edited in the CP.
+
+```bash
+composer require teamnovu/formbuilder
+php artisan vendor:publish --tag=formbuilder-blueprints
+php artisan vendor:publish --tag=formbuilder-config   # optional
+php artisan vendor:publish --tag=formbuilder-views    # optional
+```
+
+| Tag | Destination |
+|-----|-------------|
+| `formbuilder-blueprints` | `resources/blueprints/globals/form_builder.yaml` |
+| `formbuilder-config` | `config/formbuilder.php` |
+| `formbuilder-views` | `resources/views/vendor/formbuilder` |
+| `formbuilder-translations` | `lang/vendor/formbuilder` |
+
+After publishing the blueprints, create a global set with handle `form_builder`
+and fill in the default button/status texts.
+
+For local development, point the consuming Statamic application's Composer path
+repository at this checkout.
+
 ## Features
 
 - Custom text, email, phone, number, date, range, select, checkbox, radio,
@@ -13,40 +39,10 @@ multilingual form builder.
 - Translatable email subjects and bodies, including an in-CP HTML preview.
 - Submission-site capture and locale resolution before Statamic sends email.
 - Optional GraphQL resolution for `statamic://` links stored in field config.
+- Ships a publishable `form_builder` global blueprint for default UI texts.
 
-The addon owns the fieldtypes, Control Panel assets, email integration, views,
-translations, and GraphQL integration. A site's frontend form component,
-blueprints, globals, and content remain application concerns.
-
-## Installation
-
-```bash
-composer require teamnovu/formbuilder
-```
-
-Control Panel assets publish automatically after Statamic install under the
-`formbuilder` tag (`public/vendor/formbuilder`). To force-republish them:
-
-```bash
-php artisan vendor:publish --tag=formbuilder --force
-```
-
-Publish config and/or email views when you need to customize them:
-
-```bash
-php artisan vendor:publish --tag=formbuilder-config
-php artisan vendor:publish --tag=formbuilder-views
-```
-
-| Tag | Destination |
-|-----|-------------|
-| `formbuilder` | `public/vendor/formbuilder` (CP assets) |
-| `formbuilder-config` | `config/formbuilder.php` |
-| `formbuilder-views` | `resources/views/vendor/formbuilder` |
-| `formbuilder-translations` | `lang/vendor/formbuilder` |
-
-For local development, point the consuming Statamic application's Composer path
-repository at this checkout.
+The site still owns its frontend form component and the `form_builder` global
+set content.
 
 ## Configuration
 
@@ -96,9 +92,9 @@ The bundled email views can be selected with:
 To customize those templates, publish them with `--tag=formbuilder-views`. Edits
 live under `resources/views/vendor/formbuilder` and override the addon views.
 
-## Control Panel assets
+## Development
 
-Build distributable assets inside the addon:
+Build Control Panel assets inside the addon:
 
 ```bash
 composer install
@@ -106,12 +102,6 @@ pnpm install
 pnpm run build
 ```
 
-The build is written to `resources/dist` and published by Statamic to
-`public/vendor/formbuilder`.
-
-## Tests
-
 ```bash
-composer install
 vendor/bin/phpunit
 ```

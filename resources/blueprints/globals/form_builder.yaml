@@ -1,0 +1,57 @@
+tabs:
+  main:
+    display: Hauptteil
+    sections:
+      -
+        fields:
+          -
+            handle: send_button_text
+            field:
+              placeholder: Absenden
+              default: Absenden
+              type: text
+              display: 'Absenden Button'
+              localizable: true
+              instructions: 'Standardtext für Absenden Button'
+          -
+            handle: message_loading
+            field:
+              buttons:
+                - h3
+                - bold
+                - italic
+                - removeformat
+                - anchor
+              remove_empty_nodes: false
+              type: bard
+              display: 'Meldung beim Absenden'
+              localizable: true
+              instructions: 'Standardtext für Meldung beim Absenden'
+          -
+            handle: message_success
+            field:
+              buttons:
+                - h3
+                - bold
+                - italic
+                - removeformat
+                - anchor
+              remove_empty_nodes: false
+              type: bard
+              display: Erfolgsmeldung
+              localizable: true
+              instructions: 'Standardtext für Erfolgsmeldung'
+          -
+            handle: message_error
+            field:
+              buttons:
+                - h3
+                - bold
+                - italic
+                - removeformat
+                - anchor
+              remove_empty_nodes: false
+              type: bard
+              display: Fehlermeldung
+              localizable: true
+              instructions: 'Standardtext für Fehlermeldung'

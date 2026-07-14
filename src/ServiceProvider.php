@@ -46,6 +46,7 @@ class ServiceProvider extends AddonServiceProvider
     public function bootAddon(): void
     {
         $this->publishViews();
+        $this->publishBlueprints();
 
         if (config('formbuilder.use_localized_email_job')) {
             config(['statamic.forms.send_email_job' => SendFormEmail::class]);
@@ -69,6 +70,14 @@ class ServiceProvider extends AddonServiceProvider
         $this->publishes([
             $this->getAddon()->directory().'resources/views' => resource_path('views/vendor/formbuilder'),
         ], 'formbuilder-views');
+    }
+
+    private function publishBlueprints(): void
+    {
+        $this->publishes([
+            $this->getAddon()->directory().'resources/blueprints/globals/form_builder.yaml'
+                => resource_path('blueprints/globals/form_builder.yaml'),
+        ], 'formbuilder-blueprints');
     }
 
     private function limitFormFieldtypeSelector(): void
