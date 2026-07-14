@@ -3,6 +3,7 @@
 namespace Teamnovu\Formbuilder\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
+use Teamnovu\Formbuilder\Support\FieldConfig;
 
 class DisplayText extends Fieldtype
 {
@@ -22,21 +23,18 @@ class DisplayText extends Fieldtype
     protected function configFieldItems(): array
     {
         return [
-            [
-                'display' => __('Display Content'),
-                'fields' => [
-                    'title' => [
-                        'display' => __('formbuilder::form.display_title.display'),
-                        'instructions' => __('formbuilder::form.display_title.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'text' => [
-                        'display' => __('formbuilder::form.display_text.display'),
-                        'instructions' => __('formbuilder::form.display_text.instruction'),
-                        'type' => 'translatable_bard',
-                    ],
+            FieldConfig::section(__('Display Content'), [
+                'title' => [
+                    'display' => __('formbuilder::form.display_title.display'),
+                    'instructions' => __('formbuilder::form.display_title.instruction'),
+                    'type' => 'translatable_input',
                 ],
-            ],
+                'text' => [
+                    'display' => __('formbuilder::form.display_text.display'),
+                    'instructions' => __('formbuilder::form.display_text.instruction'),
+                    'type' => 'translatable_bard',
+                ],
+            ]),
         ];
     }
 

@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 use Statamic\Contracts\Assets\AssetContainer as AssetContainerContract;
 use Statamic\Facades\AssetContainer as AssetContainerFacade;
 use Statamic\Fields\Fieldtype;
+use Teamnovu\Formbuilder\Support\FieldConfig;
 
 class InputFileUpload extends Fieldtype
 {
@@ -28,80 +29,60 @@ class InputFileUpload extends Fieldtype
 
     protected function configFieldItems(): array
     {
-        return [
-            [
-                'display' => __('Input Behavior'),
-                'fields' => [
-                    'label' => [
-                        'display' => __('formbuilder::form.label.display'),
-                        'instructions' => __('formbuilder::form.label.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'help' => [
-                        'display' => __('formbuilder::form.help.display'),
-                        'instructions' => __('formbuilder::form.help.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'hint' => [
-                        'display' => __('formbuilder::form.hint.display'),
-                        'instructions' => __('formbuilder::form.hint.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'icon_label' => [
-                        'display' => __('formbuilder::form.icon_label.display'),
-                        'instructions' => __('formbuilder::form.icon_label.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'max_files' => [
-                        'display' => __('formbuilder::form.max_files.display'),
-                        'instructions' => __('formbuilder::form.max_files.instruction'),
-                        'type' => 'integer',
-                        'default' => 1,
-                        'force_in_config' => true,
-                    ],
-                    'max_filesize' => [
-                        'display' => __('formbuilder::form.max_filesize.display'),
-                        'instructions' => __('formbuilder::form.max_filesize.instruction'),
-                        'type' => 'integer',
-                        'default' => 10240, // 10 MB
-                        'force_in_config' => true,
-                    ],
-                    'allowed_mimes' => [
-                        'display' => __('formbuilder::form.allowed_mimes.display'),
-                        'instructions' => __('formbuilder::form.allowed_mimes.instruction'),
-                        'type' => 'array',
-                        'placeholder' => 'application/pdf',
-                        'default' => [
-                            '.jpg',
-                            '.png',
-                            '.gif',
-                            '.webp',
-                            '.svg',
-                            '.pdf',
-                            '.doc',
-                            '.docx',
-                            '.xls',
-                            '.xlsx',
-                            '.zip',
-                            '.mp4',
-                        ],
-                        'force_in_config' => true,
-                    ],
-                    'container' => [
-                        'display' => __('formbuilder::form.upload_container.display'),
-                        'instructions' => __('formbuilder::form.upload_container.instruction'),
-                        'type' => 'text',
-                        'default' => 'assets',
-                    ],
-                    'folder' => [
-                        'display' => __('formbuilder::form.upload_folder.display'),
-                        'instructions' => __('formbuilder::form.upload_folder.instruction'),
-                        'type' => 'text',
-                        'default' => 'form-uploads',
-                    ],
-                ],
+        return FieldConfig::createItems([
+            'icon_label' => [
+                'display' => __('formbuilder::form.icon_label.display'),
+                'instructions' => __('formbuilder::form.icon_label.instruction'),
+                'type' => 'translatable_input',
             ],
-        ];
+            'max_files' => [
+                'display' => __('formbuilder::form.max_files.display'),
+                'instructions' => __('formbuilder::form.max_files.instruction'),
+                'type' => 'integer',
+                'default' => 1,
+                'force_in_config' => true,
+            ],
+            'max_filesize' => [
+                'display' => __('formbuilder::form.max_filesize.display'),
+                'instructions' => __('formbuilder::form.max_filesize.instruction'),
+                'type' => 'integer',
+                'default' => 10240, // 10 MB
+                'force_in_config' => true,
+            ],
+            'allowed_mimes' => [
+                'display' => __('formbuilder::form.allowed_mimes.display'),
+                'instructions' => __('formbuilder::form.allowed_mimes.instruction'),
+                'type' => 'array',
+                'placeholder' => 'application/pdf',
+                'default' => [
+                    '.jpg',
+                    '.png',
+                    '.gif',
+                    '.webp',
+                    '.svg',
+                    '.pdf',
+                    '.doc',
+                    '.docx',
+                    '.xls',
+                    '.xlsx',
+                    '.zip',
+                    '.mp4',
+                ],
+                'force_in_config' => true,
+            ],
+            'container' => [
+                'display' => __('formbuilder::form.upload_container.display'),
+                'instructions' => __('formbuilder::form.upload_container.instruction'),
+                'type' => 'text',
+                'default' => 'assets',
+            ],
+            'folder' => [
+                'display' => __('formbuilder::form.upload_folder.display'),
+                'instructions' => __('formbuilder::form.upload_folder.instruction'),
+                'type' => 'text',
+                'default' => 'form-uploads',
+            ],
+        ]);
     }
 
     public function defaultValue(): mixed
@@ -233,7 +214,7 @@ class InputFileUpload extends Fieldtype
         if ($maxKilobytes > 0 && $file->getSize() > $maxKilobytes * 1024) {
             throw ValidationException::withMessages([
                 $this->field()->handle() => __('validation.max.file', ['max' => $maxKilobytes]),
-            ]);
+        ]);
         }
 
         if ($extensions === [] && $mimeTypes === []) {
@@ -248,7 +229,7 @@ class InputFileUpload extends Fieldtype
             $all = array_merge(array_map(fn ($e) => '.'.$e, $extensions), $mimeTypes);
             throw ValidationException::withMessages([
                 $this->field()->handle() => __('validation.mimetypes', ['values' => implode(', ', $all)]),
-            ]);
+        ]);
         }
     }
 

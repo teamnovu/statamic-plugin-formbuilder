@@ -11,6 +11,7 @@ use Statamic\GraphQL\TypeRegistrar as StatamicTypeRegistrar;
 use Statamic\Http\Controllers\CP\Forms\FormsController as StatamicFormsController;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
+use Teamnovu\Formbuilder\Console\Commands\PublishExampleFormCommand;
 use Teamnovu\Formbuilder\GraphQL\TypeRegistrar;
 use Teamnovu\Formbuilder\Http\Controllers\CP\FormEmailPreviewController;
 use Teamnovu\Formbuilder\Http\Controllers\CP\FormsController;
@@ -24,6 +25,10 @@ class ServiceProvider extends AddonServiceProvider
             'resources/css/addon.css',
         ],
         'publicDirectory' => 'resources/dist',
+    ];
+
+    protected $commands = [
+        PublishExampleFormCommand::class,
     ];
 
     protected $viewNamespace = 'formbuilder';
@@ -45,6 +50,9 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon(): void
     {
+        $this->publishViews();
+        $this->publishBlueprints();
+
         if (config('formbuilder.use_localized_email_job')) {
             config(['statamic.forms.send_email_job' => SendFormEmail::class]);
         }
@@ -60,6 +68,21 @@ class ServiceProvider extends AddonServiceProvider
         if (config('formbuilder.extend_email_configuration')) {
             $this->registerEmailPreviewRoute();
         }
+    }
+
+    private function publishViews(): void
+    {
+        $this->publishes([
+            $this->getAddon()->directory().'resources/views' => resource_path('views/vendor/formbuilder'),
+        ], 'formbuilder-views');
+    }
+
+    private function publishBlueprints(): void
+    {
+        $this->publishes([
+            $this->getAddon()->directory().'resources/blueprints/globals/form_builder.yaml'
+                => resource_path('blueprints/globals/form_builder.yaml'),
+        ], 'formbuilder-blueprints');
     }
 
     private function limitFormFieldtypeSelector(): void

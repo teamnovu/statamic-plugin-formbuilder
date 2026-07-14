@@ -25,6 +25,41 @@ class AddonRegistrationTest extends TestCase
         $this->assertTrue(view()->exists('formbuilder::emails.submission'));
     }
 
+    public function test_it_registers_the_publish_example_form_command(): void
+    {
+        $commands = \Illuminate\Support\Facades\Artisan::all();
+
+        $this->assertArrayHasKey('formbuilder:publish-example-form', $commands);
+    }
+
+    public function test_it_registers_publishable_config_views_and_blueprints(): void
+    {
+        $config = \Illuminate\Support\ServiceProvider::pathsToPublish(null, 'formbuilder-config');
+        $views = \Illuminate\Support\ServiceProvider::pathsToPublish(null, 'formbuilder-views');
+        $blueprints = \Illuminate\Support\ServiceProvider::pathsToPublish(null, 'formbuilder-blueprints');
+
+        $this->assertArrayHasKey(
+            realpath(__DIR__.'/../config/formbuilder.php'),
+            collect($config)->mapWithKeys(fn ($to, $from) => [realpath($from) => $to])->all()
+        );
+        $this->assertSame(config_path('formbuilder.php'), $config[array_key_first($config)]);
+
+        $this->assertArrayHasKey(
+            realpath(__DIR__.'/../resources/views'),
+            collect($views)->mapWithKeys(fn ($to, $from) => [realpath($from) => $to])->all()
+        );
+        $this->assertSame(resource_path('views/vendor/formbuilder'), $views[array_key_first($views)]);
+
+        $this->assertArrayHasKey(
+            realpath(__DIR__.'/../resources/blueprints/globals/form_builder.yaml'),
+            collect($blueprints)->mapWithKeys(fn ($to, $from) => [realpath($from) => $to])->all()
+        );
+        $this->assertSame(
+            resource_path('blueprints/globals/form_builder.yaml'),
+            $blueprints[array_key_first($blueprints)]
+        );
+    }
+
     public function test_it_loads_namespaced_translations(): void
     {
         app()->setLocale('en');

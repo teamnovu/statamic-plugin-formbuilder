@@ -10,9 +10,22 @@ return [
     /* Remember the submitting site so localized email values can be resolved. */
     'capture_submission_site' => true,
 
-    /* Replace Statamic's email job with the locale-aware implementation. */
+    /*
+     | Replace Statamic's email job with the locale-aware implementation.
+     | When true, overrides `statamic.forms.send_email_job` at boot —
+     | you do not need to edit config/statamic/forms.php.
+     */
     'use_localized_email_job' => true,
 
     /* Resolve statamic:// references embedded in form field config returned by GraphQL. */
     'resolve_statamic_links_in_graphql' => true,
+
+    /* Enable floating labels. */
+    'floating_label' => false,
+
+    /* Show helper text fields in the Control Panel field config. */
+    'show_help' => true,
+
+    /* Show hint text fields in the Control Panel field config. */
+    'show_hint' => true,
 ];

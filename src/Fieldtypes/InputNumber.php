@@ -3,6 +3,7 @@
 namespace Teamnovu\Formbuilder\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
+use Teamnovu\Formbuilder\Support\FieldConfig;
 
 class InputNumber extends Fieldtype
 {
@@ -21,53 +22,12 @@ class InputNumber extends Fieldtype
 
     protected function configFieldItems(): array
     {
-        return [
-            [
-                'display' => __('Input Behavior'),
-                'fields' => [
-
-                    'label' => [
-                        'display' => __('formbuilder::form.label.display'),
-                        'instructions' => __('formbuilder::form.label.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'help' => [
-                        'display' => __('formbuilder::form.help.display'),
-                        'instructions' => __('formbuilder::form.help.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'hint' => [
-                        'display' => __('formbuilder::form.hint.display'),
-                        'instructions' => __('formbuilder::form.hint.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'min' => [
-                        'display' => __('formbuilder::form.min.display'),
-                        'instructions' => __('formbuilder::form.min.instruction'),
-                        'type' => 'integer',
-                        'default' => 0,
-                    ],
-                    'max' => [
-                        'display' => __('formbuilder::form.max.display'),
-                        'instructions' => __('formbuilder::form.max.instruction'),
-                        'type' => 'integer',
-                        'default' => 100,
-                    ],
-                    'default' => [
-                        'display' => __('formbuilder::form.default.display'),
-                        'instructions' => __('formbuilder::form.default.instruction'),
-                        'type' => 'integer',
-                    ],
-                    'step' => [
-                        'display' => __('formbuilder::form.step.display'),
-                        'instructions' => __('formbuilder::form.step.instruction'),
-                        'type' => 'integer',
-                        'default' => 1,
-                    ],
-
-                ],
-            ],
-        ];
+        return FieldConfig::createItems([
+            'min' => FieldConfig::min(),
+            'max' => FieldConfig::max(),
+            'default' => FieldConfig::integerDefault(),
+            'step' => FieldConfig::step(),
+        ]);
     }
 
     /**

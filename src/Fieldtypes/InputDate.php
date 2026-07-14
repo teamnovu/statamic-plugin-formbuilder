@@ -3,6 +3,7 @@
 namespace Teamnovu\Formbuilder\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
+use Teamnovu\Formbuilder\Support\FieldConfig;
 
 class InputDate extends Fieldtype
 {
@@ -22,43 +23,11 @@ class InputDate extends Fieldtype
     protected function configFieldItems(): array
     {
         return [
-            [
-                'display' => __('Input Behavior'),
-                'fields' => [
-                    'label' => [
-                        'display' => __('formbuilder::form.label.display'),
-                        'instructions' => __('formbuilder::form.label.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'help' => [
-                        'display' => __('formbuilder::form.help.display'),
-                        'instructions' => __('formbuilder::form.help.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-                    'hint' => [
-                        'display' => __('formbuilder::form.hint.display'),
-                        'instructions' => __('formbuilder::form.hint.instruction'),
-                        'type' => 'translatable_input',
-                    ],
-
-                ],
-            ],
-            [
-                'display' => __('Boundaries'),
-                'fields' => [
-                    'earliest_date' => [
-                        'display' => __('formbuilder::form.earliest_date.display'),
-                        'instructions' => __('formbuilder::form.earliest_date.instruction'),
-                        'type' => 'date',
-                    ],
-                    'latest_date' => [
-                        'display' => __('formbuilder::form.latest_date.display'),
-                        'instructions' => __('formbuilder::form.latest_date.instruction'),
-                        'type' => 'date',
-                    ],
-
-                ],
-            ],
+            ...FieldConfig::createItems(),
+            FieldConfig::section(__('Boundaries'), [
+                'earliest_date' => FieldConfig::earliestDate(),
+                'latest_date' => FieldConfig::latestDate(),
+            ]),
         ];
     }
 
