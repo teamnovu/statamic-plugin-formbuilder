@@ -83,6 +83,11 @@ Send the active Statamic site handle as `_site` in the form request, or as the
 `X-Site` header. The addon stores it on the submission and resolves translated
 email configuration for that site, falling back to the first configured value.
 
+When `use_localized_email_job` is `true` (the default), the addon replaces
+`statamic.forms.send_email_job` at boot with its locale-aware job. You do not
+need to change `config/statamic/forms.php`. Set `use_localized_email_job` to
+`false` only if you need a different custom email job.
+
 The bundled email views can be selected with:
 
 - `formbuilder::emails/user-submission`
