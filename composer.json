@@ -1,7 +1,7 @@
 {
     "name": "teamnovu/formbuilder",
     "description": "A curated, multilingual form builder for Statamic 6.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "authors": [
         {
             "name": "Janis Wanger",
@@ -49,6 +49,10 @@
             "providers": [
                 "Teamnovu\\Formbuilder\\ServiceProvider"
             ]
+        },
+        "download-dist": {
+            "url": "https://github.com/teamnovu/statamic-plugin-formbuilder/releases/download/{$version}/dist.tar.gz",
+            "path": "resources/dist/build"
         }
     },
     "prefer-stable": true
