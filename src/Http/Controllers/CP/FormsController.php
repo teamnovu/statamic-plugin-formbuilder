@@ -4,6 +4,8 @@ namespace Teamnovu\Formbuilder\Http\Controllers\CP;
 
 use Statamic\Http\Controllers\CP\Forms\FormsController as StatamicFormsController;
 
+use function Statamic\trans as __;
+
 class FormsController extends StatamicFormsController
 {
     protected function editFormBlueprint($form)
@@ -32,15 +34,31 @@ class FormsController extends StatamicFormsController
         $customized = [];
 
         foreach ($fields as $field) {
-            if ($field['handle'] === 'subject') {
+            $handle = $field['handle'];
+
+            if ($handle === 'subject') {
                 $field['field']['type'] = 'translatable_input';
+                $field['field']['instructions'] = __('formbuilder::form.email_config.subject_instruction');
             }
 
-            if ($field['handle'] === 'markdown' && config('formbuilder.default_email_markdown', true)) {
+            if ($handle === 'to') {
+                $field['field']['instructions'] = __('formbuilder::form.email_config.to_instruction');
+            }
+
+            if ($handle === 'from') {
+                $field['field']['instructions'] = __('formbuilder::form.email_config.from_instruction');
+            }
+
+            if ($handle === 'reply_to') {
+                $field['field']['instructions'] = __('formbuilder::form.email_config.reply_to_instruction');
+            }
+
+            if ($handle === 'markdown' && config('formbuilder.default_email_markdown', true)) {
                 $field['field']['default'] = true;
+                $field['field']['instructions'] = __('formbuilder::form.email_config.markdown_instruction');
             }
 
-            if ($field['handle'] === 'html') {
+            if ($handle === 'html') {
                 $customized[] = [
                     'handle' => 'mail_text',
                     'field' => [
@@ -49,6 +67,8 @@ class FormsController extends StatamicFormsController
                         'instructions' => __('formbuilder::form.email_config.mail_text_instruction'),
                     ],
                 ];
+
+                $field['field']['instructions'] = __('formbuilder::form.email_config.html_instruction');
             }
 
             $customized[] = $field;

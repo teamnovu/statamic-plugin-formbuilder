@@ -16,7 +16,13 @@ return [
 
     'email_config' => [
         'mail_text_display' => 'E-Mail Text',
-        'mail_text_instruction' => 'This text will be inserted in the email.',
+        'mail_text_instruction' => 'HTML body inserted into the email template. Use Antlers placeholders with double braces for submission values, e.g. {{ vorname }}. Field handles must match the form blueprint.',
+        'to_instruction' => 'Recipient address(es), comma-separated. Use Antlers for dynamic values, e.g. {{ email }}.',
+        'from_instruction' => 'Sender address. RFC format: Display Name &lt;email@example.com&gt; or email@example.com alone. A display name without an email address is invalid.',
+        'reply_to_instruction' => 'Reply-to address(es), comma-separated. RFC format: Display Name &lt;email@example.com&gt; or email@example.com alone.',
+        'subject_instruction' => 'Email subject line. Use Antlers placeholders with double braces, e.g. {{ vorname }}.',
+        'html_instruction' => 'Blade template for this email. Choose vendor/formbuilder/emails/user-submission (confirmation to the submitter; uses E-Mail Text above) or vendor/formbuilder/emails/submission (notification to staff; lists all fields).',
+        'markdown_instruction' => 'Enabled by default for formbuilder templates. Leave on unless you use a plain Blade view without mail::message.',
         'mail_preview_display' => 'Preview',
         'mail_preview_instruction' => 'Only saved values will be displayed in the preview.',
         'mail_preview_button' => 'Email Preview',

@@ -67,6 +67,16 @@ class AddonRegistrationTest extends TestCase
         $this->assertSame('Form Input Text', __('formbuilder::form.title.text'));
     }
 
+    public function test_it_loads_german_translations_for_swiss_locale(): void
+    {
+        app()->setLocale('de_CH');
+
+        $this->assertSame(
+            'Empfänger-Adresse(n), kommagetrennt. Für dynamische Werte Antlers verwenden, z. B. {{ email }}.',
+            __('formbuilder::form.email_config.to_instruction')
+        );
+    }
+
     public function test_it_extends_statamics_email_blueprint_without_replacing_it(): void
     {
         $controller = app(StatamicFormsController::class);
@@ -78,5 +88,17 @@ class AddonRegistrationTest extends TestCase
         $this->assertSame('translatable_bard', $emailFields['mail_text']['field']['type']);
         $this->assertSame('html', $emailFields['mail_preview']['field']['type']);
         $this->assertTrue($emailFields['markdown']['field']['default'] ?? false);
+        $this->assertSame(
+            __('formbuilder::form.email_config.to_instruction'),
+            $emailFields['to']['field']['instructions']
+        );
+        $this->assertSame(
+            __('formbuilder::form.email_config.from_instruction'),
+            $emailFields['from']['field']['instructions']
+        );
+        $this->assertSame(
+            __('formbuilder::form.email_config.html_instruction'),
+            $emailFields['html']['field']['instructions']
+        );
     }
 }
