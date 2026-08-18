@@ -16,7 +16,13 @@ return [
 
     'email_config' => [
         'mail_text_display' => 'E-Mail Text',
-        'mail_text_instruction' => 'Dieser Text wird in der E-Mail eingefügt.',
+        'mail_text_instruction' => 'HTML-Inhalt, der in die E-Mail-Vorlage eingefügt wird. Für Einreichungswerte Antlers-Platzhalter mit doppelten geschweiften Klammern verwenden, z. B. {{ vorname }}. Feld-Handles müssen mit dem Formular-Blueprint übereinstimmen.',
+        'to_instruction' => 'Empfänger-Adresse(n), kommagetrennt. Für dynamische Werte Antlers verwenden, z. B. {{ email }}.',
+        'from_instruction' => 'Absender-Adresse. RFC-Format: Anzeigename &lt;email@beispiel.ch&gt; oder nur email@beispiel.ch. Nur ein Anzeigename ist ungültig.',
+        'reply_to_instruction' => 'Antwort-an-Adresse(n), kommagetrennt. RFC-Format: Anzeigename &lt;email@beispiel.ch&gt; oder nur email@beispiel.ch.',
+        'subject_instruction' => 'Betreffzeile. Antlers-Platzhalter mit doppelten geschweiften Klammern verwenden, z. B. {{ vorname }}.',
+        'html_instruction' => 'Blade-Vorlage für diese E-Mail. Wählen Sie vendor/formbuilder/emails/user-submission (Bestätigung an Absender/in; nutzt den E-Mail Text oben) oder vendor/formbuilder/emails/submission (Benachrichtigung ans Team; listet alle Felder).',
+        'markdown_instruction' => 'Standardmässig aktiviert für Formbuilder-Vorlagen. Nur deaktivieren, wenn eine einfache Blade-Ansicht ohne mail::message verwendet wird.',
         'mail_preview_display' => 'Vorschau',
         'mail_preview_instruction' => 'In der Vorschau werden nur gespeicherte Werte angezeigt.',
         'mail_preview_button' => 'E-Mail Vorschau',

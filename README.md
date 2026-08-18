@@ -64,6 +64,7 @@ return [
     'extend_email_configuration' => true,
     'capture_submission_site' => true,
     'use_localized_email_job' => true,
+    'default_email_markdown' => true,
     'resolve_statamic_links_in_graphql' => true,
     'floating_label' => false,
     'show_help' => true,
@@ -93,13 +94,88 @@ When `use_localized_email_job` is `true` (the default), the addon replaces
 need to change `config/statamic/forms.php`. Set `use_localized_email_job` to
 `false` only if you need a different custom email job.
 
+Formbuilder email views (`user-submission`, `submission`) use Laravel's
+`mail::message` component. With `default_email_markdown` enabled (the default),
+the send job turns on Statamic's markdown email pipeline automatically whenever
+an HTML template is configured — editors do not need to toggle Markdown in the
+CP. Set `default_email_markdown` to `false` to restore Statamic's view-only
+rendering, or disable Markdown per email in form settings.
+
 The bundled email views can be selected with:
 
-- `formbuilder::emails/user-submission`
-- `formbuilder::emails/submission`
+- `vendor/formbuilder/emails/user-submission` (shown in the CP template picker after publishing views)
+- `vendor/formbuilder/emails/submission`
+
+The namespaced equivalents `formbuilder::emails/user-submission` and
+`formbuilder::emails/submission` also work in YAML, but the CP dropdown lists
+the `vendor/formbuilder/…` paths when views are published.
 
 To customize those templates, publish them with `--tag=formbuilder-views`. Edits
 live under `resources/views/vendor/formbuilder` and override the addon views.
+After upgrading the addon, diff your published copies against the package if you
+rely on local overrides.
+
+## Email configuration
+
+Form emails are configured per form in the Statamic Control Panel under
+**Configure Form → Email**. The addon adds translatable **E-Mail Text**
+(`mail_text`) and an in-CP preview alongside Statamic's native fields.
+
+### Variable substitution (Antlers)
+
+Statamic parses **Antlers**, not Handlebars, in `to`, `from`, `reply_to`,
+`subject`, and other string config values at send time. Use **double braces**
+matching field handles from the form blueprint:
+
+```yaml
+to: '{{ email }}, admin@example.com'
+subject:
+  - handle: de
+    value: 'Nachricht von {{ vorname }} {{ nachname }}'
+mail_text:
+  - handle: de
+    value: '<p>Guten Tag {{ vorname }},</p><p>{{ mitteilung }}</p>'
+```
+
+Single braces like `{vorname}` are left as literal text in sent emails.
+
+### Sender and recipient addresses
+
+Use a valid RFC 2822 address. Either a bare email or a display name with email:
+
+```yaml
+from: 'Example Org <noreply@example.com>'
+reply_to: admin@example.com
+```
+
+A display name alone (e.g. `from: 'Example Org'`) will fail when the email is sent.
+
+### HTML templates
+
+| Template | Use for |
+|----------|---------|
+| `vendor/formbuilder/emails/user-submission` | Confirmation to the submitter; body comes from translatable **E-Mail Text** |
+| `vendor/formbuilder/emails/submission` | Notification to staff; lists all submitted fields |
+
+Example minimal config:
+
+```yaml
+email:
+  -
+    to: '{{ email }}'
+    from: 'Example Org <noreply@example.com>'
+    subject:
+      - handle: de
+        value: 'We received your message'
+    mail_text:
+      - handle: de
+        value: '<p>Thank you, {{ vorname }}.</p>'
+    html: vendor/formbuilder/emails/user-submission
+```
+
+Markdown rendering for bundled templates is enabled automatically when
+`default_email_markdown` is `true` (the default). Editors normally do not need
+to change the Markdown toggle.
 
 ## Development
 

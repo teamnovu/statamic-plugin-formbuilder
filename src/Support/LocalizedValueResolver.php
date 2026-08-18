@@ -21,4 +21,25 @@ class LocalizedValueResolver
             ->map(fn (mixed $value): mixed => $this->resolve($value, $siteHandle))
             ->all();
     }
+
+    public function prepareForSending(array $configuration, string $siteHandle): array
+    {
+        $configuration = $this->resolveConfiguration($configuration, $siteHandle);
+
+        if (! config('formbuilder.default_email_markdown', true)) {
+            return $configuration;
+        }
+
+        if (empty($configuration['html'])) {
+            return $configuration;
+        }
+
+        if (($configuration['markdown'] ?? null) === false) {
+            return $configuration;
+        }
+
+        $configuration['markdown'] = true;
+
+        return $configuration;
+    }
 }

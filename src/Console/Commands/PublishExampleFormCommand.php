@@ -48,7 +48,20 @@ class PublishExampleFormCommand extends Command
 
     private function blueprintPath(): string
     {
-        return rtrim(config('statamic.system.blueprints_path'), '/').'/forms/template.yaml';
+        return rtrim($this->formsBlueprintDirectory(), '/').'/template.yaml';
+    }
+
+    private function formsBlueprintDirectory(): string
+    {
+        $paths = config('statamic.system.blueprints_path');
+
+        if (is_array($paths) && isset($paths['forms'])) {
+            return $paths['forms'];
+        }
+
+        $default = is_array($paths) ? $paths['default'] : $paths;
+
+        return rtrim($default, '/').'/forms';
     }
 
     private function formPath(): string
