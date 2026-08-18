@@ -36,6 +36,10 @@ class FormsController extends StatamicFormsController
                 $field['field']['type'] = 'translatable_input';
             }
 
+            if ($field['handle'] === 'markdown' && config('formbuilder.default_email_markdown', true)) {
+                $field['field']['default'] = true;
+            }
+
             if ($field['handle'] === 'html') {
                 $customized[] = [
                     'handle' => 'mail_text',

@@ -77,5 +77,6 @@ class AddonRegistrationTest extends TestCase
         $this->assertSame('translatable_input', $emailFields['subject']['field']['type']);
         $this->assertSame('translatable_bard', $emailFields['mail_text']['field']['type']);
         $this->assertSame('html', $emailFields['mail_preview']['field']['type']);
+        $this->assertTrue($emailFields['markdown']['field']['default'] ?? false);
     }
 }

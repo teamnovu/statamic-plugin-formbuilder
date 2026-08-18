@@ -17,6 +17,13 @@ return [
      */
     'use_localized_email_job' => true,
 
+    /*
+     | Enable Statamic's markdown email pipeline by default when an HTML template
+     | is configured. Required for formbuilder email views that use mail::message.
+     | Set to false to restore Statamic's default (view-only rendering).
+     */
+    'default_email_markdown' => true,
+
     /* Resolve statamic:// references embedded in form field config returned by GraphQL. */
     'resolve_statamic_links_in_graphql' => true,
 

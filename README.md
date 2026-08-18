@@ -93,6 +93,13 @@ When `use_localized_email_job` is `true` (the default), the addon replaces
 need to change `config/statamic/forms.php`. Set `use_localized_email_job` to
 `false` only if you need a different custom email job.
 
+Formbuilder email views (`user-submission`, `submission`) use Laravel's
+`mail::message` component. With `default_email_markdown` enabled (the default),
+the send job turns on Statamic's markdown email pipeline automatically whenever
+an HTML template is configured — editors do not need to toggle Markdown in the
+CP. Set `default_email_markdown` to `false` to restore Statamic's view-only
+rendering, or disable Markdown per email in form settings.
+
 The bundled email views can be selected with:
 
 - `formbuilder::emails/user-submission`

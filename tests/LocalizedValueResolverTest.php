@@ -43,4 +43,56 @@ class LocalizedValueResolverTest extends TestCase
             app(LocalizedValueResolver::class)->resolveConfiguration($configuration, 'en')
         );
     }
+
+    #[Test]
+    public function it_enables_markdown_by_default_when_an_html_template_is_configured(): void
+    {
+        config(['formbuilder.default_email_markdown' => true]);
+
+        $prepared = app(LocalizedValueResolver::class)->prepareForSending([
+            'to' => 'hello@example.com',
+            'html' => 'formbuilder::emails/user-submission',
+        ], 'en');
+
+        $this->assertTrue($prepared['markdown']);
+    }
+
+    #[Test]
+    public function it_does_not_enable_markdown_when_explicitly_disabled(): void
+    {
+        config(['formbuilder.default_email_markdown' => true]);
+
+        $prepared = app(LocalizedValueResolver::class)->prepareForSending([
+            'to' => 'hello@example.com',
+            'html' => 'formbuilder::emails/user-submission',
+            'markdown' => false,
+        ], 'en');
+
+        $this->assertFalse($prepared['markdown']);
+    }
+
+    #[Test]
+    public function it_does_not_enable_markdown_without_an_html_template(): void
+    {
+        config(['formbuilder.default_email_markdown' => true]);
+
+        $prepared = app(LocalizedValueResolver::class)->prepareForSending([
+            'to' => 'hello@example.com',
+        ], 'en');
+
+        $this->assertArrayNotHasKey('markdown', $prepared);
+    }
+
+    #[Test]
+    public function it_respects_default_email_markdown_config_being_disabled(): void
+    {
+        config(['formbuilder.default_email_markdown' => false]);
+
+        $prepared = app(LocalizedValueResolver::class)->prepareForSending([
+            'to' => 'hello@example.com',
+            'html' => 'formbuilder::emails/user-submission',
+        ], 'en');
+
+        $this->assertArrayNotHasKey('markdown', $prepared);
+    }
 }
