@@ -63,6 +63,11 @@ return [
         'instruction' => 'Dies ist der Haupt-Label und wird oben über dem Eingabefeld angezeigt.',
     ],
 
+    'hide_label' => [
+        'display' => 'Label ausblenden',
+        'instruction' => 'Wenn aktiviert, wird das Label nicht über dem Eingabefeld angezeigt.',
+    ],
+
     'hint' => [
         'display' => 'Hinweistext',
         'instruction' => 'Dies ist der Hinweis-Text und wird oben rechts neben dem Eingabefeld angezeigt.',
