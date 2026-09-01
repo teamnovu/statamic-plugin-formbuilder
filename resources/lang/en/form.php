@@ -63,6 +63,11 @@ return [
         'instruction' => 'This is the main label and will be displayed above the input field.',
     ],
 
+    'hide_label' => [
+        'display' => 'Hide Label',
+        'instruction' => 'When enabled, the label is not displayed above the input field.',
+    ],
+
     'hint' => [
         'display' => 'Hint text',
         'instruction' => 'This is the hint message and will be displayed on the top right of the input field.',

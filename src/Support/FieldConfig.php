@@ -40,6 +40,16 @@ class FieldConfig
         ];
     }
 
+    public static function hideLabel(): array
+    {
+        return [
+            'display' => __('formbuilder::form.hide_label.display'),
+            'instructions' => __('formbuilder::form.hide_label.instruction'),
+            'type' => 'toggle',
+            'default' => false,
+        ];
+    }
+
     public static function floatingLabel(): array
     {
         return [
@@ -190,6 +200,7 @@ class FieldConfig
     {
         $fields = [
             'label' => self::label(),
+            'hide_label' => self::hideLabel(),
         ];
 
         if ($placeholder) {

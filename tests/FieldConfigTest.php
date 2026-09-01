@@ -20,14 +20,14 @@ class FieldConfigTest extends TestCase
 
         $this->assertCount(1, $items);
         $this->assertSame(__('Input Behavior'), $items[0]['display']);
-        $this->assertSame(['label', 'help', 'hint'], array_keys($items[0]['fields']));
+        $this->assertSame(['label', 'hide_label', 'help', 'hint'], array_keys($items[0]['fields']));
     }
 
     public function test_create_items_can_include_placeholder(): void
     {
         $items = FieldConfig::createItems(placeholder: true);
 
-        $this->assertSame(['label', 'placeholder', 'help', 'hint'], array_keys($items[0]['fields']));
+        $this->assertSame(['label', 'hide_label', 'placeholder', 'help', 'hint'], array_keys($items[0]['fields']));
         $this->assertSame('translatable_input', $items[0]['fields']['placeholder']['type']);
     }
 
@@ -38,7 +38,7 @@ class FieldConfigTest extends TestCase
         ], placeholder: true);
 
         $this->assertSame(
-            ['label', 'placeholder', 'help', 'hint', 'floating_label'],
+            ['label', 'hide_label', 'placeholder', 'help', 'hint', 'floating_label'],
             array_keys($items[0]['fields'])
         );
     }
@@ -49,7 +49,7 @@ class FieldConfigTest extends TestCase
 
         $items = FieldConfig::createItems(placeholder: true);
 
-        $this->assertSame(['label', 'placeholder', 'hint'], array_keys($items[0]['fields']));
+        $this->assertSame(['label', 'hide_label', 'placeholder', 'hint'], array_keys($items[0]['fields']));
     }
 
     public function test_create_items_omits_hint_when_disabled(): void
@@ -58,7 +58,7 @@ class FieldConfigTest extends TestCase
 
         $items = FieldConfig::createItems(placeholder: true);
 
-        $this->assertSame(['label', 'placeholder', 'help'], array_keys($items[0]['fields']));
+        $this->assertSame(['label', 'hide_label', 'placeholder', 'help'], array_keys($items[0]['fields']));
     }
 
     public function test_create_items_omits_help_and_hint_when_both_disabled(): void
@@ -70,14 +70,22 @@ class FieldConfigTest extends TestCase
 
         $items = FieldConfig::createItems();
 
-        $this->assertSame(['label'], array_keys($items[0]['fields']));
+        $this->assertSame(['label', 'hide_label'], array_keys($items[0]['fields']));
     }
 
     public function test_date_fieldtype_uses_create_items_without_extra_fields(): void
     {
         $fields = $this->configFields(InputDate::class);
 
-        $this->assertSame(['label', 'help', 'hint'], array_keys($fields));
+        $this->assertSame(['label', 'hide_label', 'help', 'hint'], array_keys($fields));
+    }
+
+    public function test_hide_label_is_toggle_defaulting_false(): void
+    {
+        $this->assertSame([
+            'type' => 'toggle',
+            'default' => false,
+        ], $this->fieldConfig(InputCheckboxes::class, 'hide_label'));
     }
 
     public function test_floating_label_is_hidden_and_defaults_from_global_config(): void
