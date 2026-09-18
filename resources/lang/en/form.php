@@ -14,6 +14,13 @@ return [
     |--------------------------------------------------------------------------
     */
 
+    'one_click_translation' => [
+        'translate' => 'Translate',
+        'translating' => 'Translating…',
+        'missing_source' => 'Add a default-language value first.',
+        'failed' => 'Translation failed. Is the One-click Content Translation addon configured?',
+    ],
+
     'email_config' => [
         'mail_text_display' => 'E-Mail Text',
         'mail_text_instruction' => 'HTML body inserted into the email template. Use Antlers placeholders with double braces for submission values, e.g. {{ vorname }}. Field handles must match the form blueprint.',

@@ -96,9 +96,20 @@ class TranslatableInput extends Fieldtype
         // get all sites
         $sites = Site::all();
 
+        $oneClickTranslation = config('formbuilder.enable_one_click_translation', false)
+            && class_exists(\Appswithlove\StatamicOneClickContentTranslation\ServiceProvider::class);
+
         return [
             'site' => $site,
             'sites' => $sites,
+            'defaultSite' => Site::default()->handle(),
+            'oneClickTranslation' => $oneClickTranslation,
+            'oneClickTranslationLabels' => $oneClickTranslation ? [
+                'translate' => __('formbuilder::form.one_click_translation.translate'),
+                'translating' => __('formbuilder::form.one_click_translation.translating'),
+                'missingSource' => __('formbuilder::form.one_click_translation.missing_source'),
+                'failed' => __('formbuilder::form.one_click_translation.failed'),
+            ] : null,
         ];
     }
 
