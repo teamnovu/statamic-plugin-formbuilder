@@ -41,5 +41,5 @@ return [
      | Requires appswithlove/statamic-one-click-content-translation to be
      | installed and configured (TRANSLATION_DEEPL_AUTH_KEY or Google creds).
      */
-    'enable_one_click_translation' => true,
+    'enable_one_click_translation' => false,
 ];
