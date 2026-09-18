@@ -69,7 +69,25 @@ return [
     'floating_label' => false,
     'show_help' => true,
     'show_hint' => true,
+    'enable_one_click_translation' => false,
 ];
+```
+
+`enable_one_click_translation` adds translate buttons to `translatable_input`
+fields in the form blueprint editor (labels, placeholders, hints, email
+subjects, and similar strings). Each button translates from the default site
+into the selected site using DeepL or Google Cloud.
+
+This requires the separate
+[`appswithlove/statamic-one-click-content-translation`](https://github.com/appswithlove/statamic-one-click-content-translation)
+addon to be installed and configured in the consuming Statamic project. Formbuilder
+does not bundle or depend on it; buttons appear only when both the config flag
+and the AWL addon are present.
+
+Example in a site config:
+
+```php
+'enable_one_click_translation' => true,
 ```
 
 `restrict_form_fieldtypes` deliberately hides every fieldtype except the addon's

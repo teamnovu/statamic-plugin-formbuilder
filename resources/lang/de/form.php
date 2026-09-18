@@ -14,6 +14,13 @@ return [
     |--------------------------------------------------------------------------
     */
 
+    'one_click_translation' => [
+        'translate' => 'Übersetzen',
+        'translating' => 'Wird übersetzt…',
+        'missing_source' => 'Zuerst einen Wert in der Standardsprache eingeben.',
+        'failed' => 'Übersetzung fehlgeschlagen. Ist das One-click Content Translation Addon konfiguriert?',
+    ],
+
     'email_config' => [
         'mail_text_display' => 'E-Mail Text',
         'mail_text_instruction' => 'HTML-Inhalt, der in die E-Mail-Vorlage eingefügt wird. Für Einreichungswerte Antlers-Platzhalter mit doppelten geschweiften Klammern verwenden, z. B. {{ vorname }}. Feld-Handles müssen mit dem Formular-Blueprint übereinstimmen.',

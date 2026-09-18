@@ -35,4 +35,11 @@ return [
 
     /* Show hint text fields in the Control Panel field config. */
     'show_hint' => true,
+
+    /*
+     | Enable one-click translation buttons on translatable_input fields.
+     | Requires appswithlove/statamic-one-click-content-translation to be
+     | installed and configured (TRANSLATION_DEEPL_AUTH_KEY or Google creds).
+     */
+    'enable_one_click_translation' => false,
 ];
