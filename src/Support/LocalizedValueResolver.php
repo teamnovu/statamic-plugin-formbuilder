@@ -24,7 +24,9 @@ class LocalizedValueResolver
 
     public function prepareForSending(array $configuration, string $siteHandle): array
     {
-        $configuration = $this->resolveConfiguration($configuration, $siteHandle);
+        $configuration = collect($this->resolveConfiguration($configuration, $siteHandle))
+            ->map(fn (mixed $value): mixed => is_string($value) ? $this->normalizeAntlersQuotes($value) : $value)
+            ->all();
 
         if (! config('formbuilder.default_email_markdown', true)) {
             return $configuration;
@@ -41,5 +43,18 @@ class LocalizedValueResolver
         $configuration['markdown'] = true;
 
         return $configuration;
+    }
+
+    /**
+     * Decode HTML entities inside Antlers tags so Bard-saved conditions like
+     * {{ if foo == &quot;bar&quot; }} parse correctly alongside literal quotes.
+     */
+    public function normalizeAntlersQuotes(string $value): string
+    {
+        return preg_replace_callback(
+            '/\{\{.*?\}\}/s',
+            fn (array $matches): string => html_entity_decode($matches[0], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+            $value,
+        ) ?? $value;
     }
 }
