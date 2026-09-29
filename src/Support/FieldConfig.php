@@ -137,6 +137,8 @@ class FieldConfig
             'display' => __('formbuilder::form.earliest_date.display'),
             'instructions' => __('formbuilder::form.earliest_date.instruction'),
             'type' => 'date',
+            'time_enabled' => false,
+            'format' => 'Y-m-d',
         ];
     }
 
@@ -146,6 +148,8 @@ class FieldConfig
             'display' => __('formbuilder::form.latest_date.display'),
             'instructions' => __('formbuilder::form.latest_date.instruction'),
             'type' => 'date',
+            'time_enabled' => false,
+            'format' => 'Y-m-d',
         ];
     }
 

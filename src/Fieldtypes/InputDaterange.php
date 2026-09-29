@@ -3,6 +3,7 @@
 namespace Teamnovu\Formbuilder\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
+use Teamnovu\Formbuilder\Support\DateBoundaryRules;
 use Teamnovu\Formbuilder\Support\FieldConfig;
 
 class InputDaterange extends Fieldtype
@@ -89,6 +90,9 @@ class InputDaterange extends Fieldtype
      */
     public function rules(): array
     {
-        return [];
+        return DateBoundaryRules::forDateRange(
+            $this->config('earliest_date'),
+            $this->config('latest_date'),
+        );
     }
 }
