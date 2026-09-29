@@ -138,6 +138,21 @@ class FieldConfigTest extends TestCase
         );
     }
 
+    public function test_date_boundary_fields_are_date_only(): void
+    {
+        $this->assertSame([
+            'type' => 'date',
+            'time_enabled' => false,
+            'format' => 'Y-m-d',
+        ], collect(FieldConfig::earliestDate())->only(['type', 'time_enabled', 'format'])->all());
+
+        $this->assertSame([
+            'type' => 'date',
+            'time_enabled' => false,
+            'format' => 'Y-m-d',
+        ], collect(FieldConfig::latestDate())->only(['type', 'time_enabled', 'format'])->all());
+    }
+
     /**
      * @return array<string, array>
      */

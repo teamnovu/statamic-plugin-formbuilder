@@ -4,6 +4,7 @@ namespace Teamnovu\Formbuilder\GraphQL\Types;
 
 use Illuminate\Support\Arr;
 use Statamic\Facades\Data;
+use Teamnovu\Formbuilder\Support\DateBoundaryNormalizer;
 
 /**
  * Extends Statamic's GraphQL Field type to resolve statamic:// links in field configs.
@@ -29,6 +30,7 @@ class FieldType extends \Statamic\GraphQL\Types\FieldType
         $fields['config']['resolve'] = function ($field) {
             $keys = $field->fieldtype()->configFields()->all()->keys()->all();
             $config = Arr::only($field->config(), $keys);
+            $config = $this->normalizeDateBoundaries($config);
 
             return $this->resolveStatamicLinks($config);
         };
@@ -40,6 +42,27 @@ class FieldType extends \Statamic\GraphQL\Types\FieldType
      * Recursively walks a config value and replaces any "statamic://type::id" string
      * with the resolved URL. Non-matching strings and non-string values pass through unchanged.
      */
+    /**
+     * @param  array<string, mixed>  $config
+     * @return array<string, mixed>
+     */
+    private function normalizeDateBoundaries(array $config): array
+    {
+        foreach (['earliest_date', 'latest_date'] as $key) {
+            if (! array_key_exists($key, $config)) {
+                continue;
+            }
+
+            $normalized = DateBoundaryNormalizer::normalize($config[$key]);
+
+            if ($normalized !== null) {
+                $config[$key] = $normalized;
+            }
+        }
+
+        return $config;
+    }
+
     private function resolveStatamicLinks(mixed $value): mixed
     {
         if (is_string($value)) {
