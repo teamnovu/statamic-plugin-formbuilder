@@ -24,11 +24,11 @@
 @if(
     !str_contains($field['handle'], 'mail_text')
     && !str_contains($field['handle'], 'form_title_')
-    && !isset($field['config']['default'])
     && (
         ($rawValue instanceof \Statamic\Fields\LabeledValue && $rawValue->value())
         || (gettype($rawValue) === 'string' && $rawValue !== 'undefined' && $rawValue !== '')
         || gettype($rawValue) === 'integer'
+        || gettype($rawValue) === 'double'
         || (is_array($rawValue) && count($rawValue) > 0)
         || $rawValue instanceof \Statamic\Assets\Asset
         || ($rawValue instanceof \Statamic\Contracts\Query\Builder && $rawValue->count() > 0))
@@ -52,7 +52,12 @@
 
 {{-- Select Options --}}
 @foreach($rawValue as $item)
-- {{ ($item['label'] ?? '') !== 'undefined' ? ($item['label'] ?? '') : '' }}
+@php
+    $itemLabel = $item instanceof \Statamic\Fields\LabeledValue
+        ? $item->label()
+        : (is_array($item) ? ($item['label'] ?? $item['value'] ?? implode(', ', $item)) : $item);
+@endphp
+- {{ $itemLabel !== 'undefined' ? $itemLabel : '' }}
 @endforeach
 
 @elseif(is_array($rawValue) && count($rawValue) === 1 && isset($rawValue[0]['value']))
