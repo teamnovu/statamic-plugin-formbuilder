@@ -27,6 +27,7 @@ class InputNumber extends Fieldtype
             'max' => FieldConfig::max(),
             'default' => FieldConfig::integerDefault(),
             'step' => FieldConfig::step(),
+            'autocomplete' => FieldConfig::autocomplete(),
         ]);
     }
 

@@ -43,6 +43,9 @@ repository at this checkout.
   switch, slider, upload, and display-text fieldtypes.
 - Per-site labels, hints, options, and rich text through internal translatable
   fieldtypes.
+- An `autocomplete` setting on text, email, textarea, phone, and number inputs
+  that tells browsers which stored visitor data (name, email, address, …) to
+  offer for the field.
 - Locale-aware form submission views in the Control Panel.
 - Translatable email subjects and bodies, including an in-CP HTML preview.
 - Submission-site capture and locale resolution before Statamic sends email.

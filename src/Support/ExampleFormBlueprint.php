@@ -64,6 +64,7 @@ class ExampleFormBlueprint
             $this->field('input_email', 'input_email', [
                 ...$this->commonTranslatableFields(placeholder: true),
                 'floating_label' => false,
+                'autocomplete' => 'email',
                 'width' => 50,
             ]),
             $this->field('input_textarea', 'input_textarea', [
@@ -77,6 +78,7 @@ class ExampleFormBlueprint
                 'country_codes' => $this->countryCodes(),
                 'show_country_code' => false,
                 'show_search' => false,
+                'autocomplete' => 'tel',
                 'width' => 33,
             ]),
             $this->field('input_phone_country_code', 'input_phone', [
@@ -87,6 +89,7 @@ class ExampleFormBlueprint
                 'country_codes' => $this->countryCodes(),
                 'show_country_code' => true,
                 'show_search' => false,
+                'autocomplete' => 'tel-national',
                 'width' => 33,
             ], label: 'Input Phone (Country Code)'),
             $this->field('input_phone_country_code_search', 'input_phone', [
@@ -98,6 +101,7 @@ class ExampleFormBlueprint
                 'show_country_code' => true,
                 'show_search' => true,
                 'show_country_code_selector_search' => true,
+                'autocomplete' => 'tel-national',
                 'width' => 33,
             ], label: 'Input Phone (Country Code + Search)'),
             $this->field('input_number', 'input_number', [

@@ -25,6 +25,7 @@ class InputText extends Fieldtype
         return FieldConfig::createItems([
             'character_limit' => FieldConfig::characterLimit(),
             'floating_label' => FieldConfig::floatingLabel(),
+            'autocomplete' => FieldConfig::autocomplete(),
         ], placeholder: true);
     }
 
