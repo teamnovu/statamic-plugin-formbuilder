@@ -67,6 +67,28 @@ class FormBlueprintSelectionTest extends TestCase
         ], $this->selections());
     }
 
+    public function test_a_field_can_take_over_the_old_handle_of_another_renamed_field(): void
+    {
+        $this->saveForm('blueprint_selection_test', [
+            'a' => ['type' => 'input_text'],
+            'b' => ['type' => 'input_text'],
+        ], [
+            ['to' => 'a@example.test', 'custom_field_selection' => true, 'included_fields' => ['b', 'a']],
+            ['to' => 'b@example.test', 'custom_field_selection' => true, 'included_fields' => ['a']],
+        ]);
+
+        $payload = $this->editorPayload();
+        $payload = $this->renameField($payload, 'b', 'c');
+        $payload = $this->renameField($payload, 'a', 'b');
+
+        $this->saveBlueprint($payload);
+
+        $this->assertSame([
+            ['c', 'b'],
+            ['b'],
+        ], $this->selections());
+    }
+
     public function test_added_fields_are_not_added_to_a_selection(): void
     {
         $payload = $this->editorPayload();
