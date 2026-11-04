@@ -28,6 +28,8 @@ class FormFields extends Relationship
 
     protected $icon = 'forms';
 
+    private ?Collection $formFields = null;
+
     public static function title()
     {
         return __('formbuilder::form.form_fields.title');
@@ -91,15 +93,20 @@ class FormFields extends Relationship
         ];
     }
 
+    // Cached, since toItemArray() runs once per selected handle.
     private function formFields(): Collection
     {
+        if ($this->formFields) {
+            return $this->formFields;
+        }
+
         $form = Form::find((string) $this->config('form'));
 
         if (! $form) {
             return collect();
         }
 
-        return $form->blueprint()->fields()->all()
+        return $this->formFields = $form->blueprint()->fields()->all()
             ->reject(fn ($field) => in_array($field->type(), self::VALUELESS_FIELDTYPES, true));
     }
 

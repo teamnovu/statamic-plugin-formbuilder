@@ -51,6 +51,9 @@ class FormBlueprintController extends StatamicFormBlueprintController
         $handlesBefore = $before->fields()->all()->keys()->all();
         $editor = $this->editorToken($request);
         $idsBefore = ($editor ? session()->get($this->sessionKey($form, $editor)) : null) ?? $this->idsOnLoad($before);
+        // Fields added or renamed in another tab after this editor loaded are missing from its save without
+        // having been deleted here. They stay selected and show as invalid items instead of silently disappearing.
+        $unseen = array_diff(array_values($this->idsOnLoad($before)), array_values($idsBefore));
 
         parent::update($request, $form);
 
@@ -59,7 +62,7 @@ class FormBlueprintController extends StatamicFormBlueprintController
         $renames = $this->renames($idsBefore, $posted, $handlesBefore, $handlesAfter);
         // A deleted field whose handle was taken over by a renamed one is gone too, so its selection must not carry over.
         $deleted = array_values(array_unique(array_merge(
-            array_diff($handlesBefore, $handlesAfter, array_keys($renames)),
+            array_diff($handlesBefore, $handlesAfter, array_keys($renames), $unseen),
             array_diff(array_intersect(array_values($renames), $handlesBefore), array_keys($renames)),
         )));
 

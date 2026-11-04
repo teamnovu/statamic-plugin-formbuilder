@@ -169,6 +169,23 @@ class FormBlueprintSelectionTest extends TestCase
         ], $this->selections());
     }
 
+    public function test_a_stale_tab_does_not_remove_a_field_that_another_tab_renamed(): void
+    {
+        $stale = $this->loadEditor();
+        $other = $this->loadEditor();
+
+        $this->saveBlueprint($this->renameField($other, 'vorname', 'first_name'));
+
+        // The stale tab still shows vorname and saves it back, without first_name.
+        $this->saveBlueprint($stale);
+
+        $this->assertSame([
+            ['nachricht', 'first_name', 'nachname'],
+            ['email', 'first_name'],
+            null,
+        ], $this->selections());
+    }
+
     public function test_the_edit_page_hands_the_editor_a_token(): void
     {
         $this->get(cp_route('blueprints.forms.edit', 'blueprint_selection_test'))
@@ -182,6 +199,14 @@ class FormBlueprintSelectionTest extends TestCase
 
         return $method->invoke($controller, Form::find('blueprint_selection_test')->blueprint())
             + ['formbuilder_editor' => $editor];
+    }
+
+    // The blueprint as an editor page receives it, with its own token and session map.
+    private function loadEditor(): array
+    {
+        return $this->get(cp_route('blueprints.forms.edit', 'blueprint_selection_test'))
+            ->assertOk()
+            ->viewData('page')['props']['blueprint'];
     }
 
     private function renameField(array $payload, string $from, string $to): array

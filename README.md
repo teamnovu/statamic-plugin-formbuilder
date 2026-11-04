@@ -209,6 +209,8 @@ When the form's blueprint changes:
 - **Renamed fields** stay selected in the same position. Saving the blueprint in
   **Edit Blueprint** rewrites the handle in every email of the form.
 - **Deleted fields** are removed from the selections when the blueprint is saved.
+  A field added or renamed in another tab after **Edit Blueprint** was opened is
+  not removed when this tab saves without it. It shows as an invalid (red) item.
 - If the blueprint YAML is edited by hand or deployed, a selected handle that no
   longer exists shows as an invalid (red) item in **Fields in email**, where it
   can be removed. When sending, it is ignored and a warning is logged.

@@ -19,6 +19,7 @@ class FormEmailPreviewTest extends TestCase
             'trenner' => ['type' => 'spacer', 'display' => 'Trenner'],
             'nachname' => ['type' => 'input_text', 'display' => 'Nachname'],
             'nachricht' => ['type' => 'input_textarea', 'display' => 'Nachricht'],
+            'hinweis' => ['type' => 'display_text', 'display' => 'Hinweis'],
         ], [
             ['to' => 'a@example.test', 'html' => 'formbuilder::emails.submission', 'markdown' => true],
             [
@@ -38,6 +39,11 @@ class FormEmailPreviewTest extends TestCase
         $this->assertStringNotContainsString('[Trenner]', $html);
         $this->assertLessThan(strpos($html, '[Nachname]'), strpos($html, '[Vorname]'));
         $this->assertLessThan(strpos($html, '[Nachricht]'), strpos($html, '[Nachname]'));
+    }
+
+    public function test_preview_hides_display_text_like_a_real_email(): void
+    {
+        $this->assertStringNotContainsString('Hinweis', $this->preview(0));
     }
 
     public function test_preview_lists_only_the_selected_fields_in_order(): void
