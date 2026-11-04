@@ -7,9 +7,12 @@ use Illuminate\Support\Facades\Route;
 use ReflectionMethod;
 use Statamic\Facades\Form;
 use Statamic\GraphQL\TypeRegistrar as StatamicTypeRegistrar;
+use Statamic\Http\Controllers\CP\Forms\FormBlueprintController as StatamicFormBlueprintController;
 use Statamic\Http\Controllers\CP\Forms\FormsController as StatamicFormsController;
+use Teamnovu\Formbuilder\Fieldtypes\FormFields;
 use Teamnovu\Formbuilder\Fieldtypes\InputText;
 use Teamnovu\Formbuilder\GraphQL\TypeRegistrar;
+use Teamnovu\Formbuilder\Http\Controllers\CP\FormBlueprintController;
 use Teamnovu\Formbuilder\Http\Controllers\CP\FormsController;
 use Teamnovu\Formbuilder\Jobs\SendFormEmail;
 
@@ -18,9 +21,11 @@ class AddonRegistrationTest extends TestCase
     public function test_it_registers_the_formbuilder_integrations(): void
     {
         $this->assertInstanceOf(FormsController::class, app(StatamicFormsController::class));
+        $this->assertInstanceOf(FormBlueprintController::class, app(StatamicFormBlueprintController::class));
         $this->assertInstanceOf(TypeRegistrar::class, app(StatamicTypeRegistrar::class));
         $this->assertSame(SendFormEmail::class, config('statamic.forms.send_email_job'));
         $this->assertSame(InputText::class, FieldtypeRepository::classes()->get('input_text'));
+        $this->assertSame(FormFields::class, FieldtypeRepository::classes()->get('form_fields'));
         $this->assertTrue(Route::has('statamic.cp.forms.email-preview'));
         $this->assertTrue(view()->exists('formbuilder::emails.submission'));
     }
@@ -100,5 +105,30 @@ class AddonRegistrationTest extends TestCase
             __('formbuilder::form.email_config.html_instruction'),
             $emailFields['html']['field']['instructions']
         );
+    }
+
+    public function test_it_adds_the_field_selection_between_the_mail_text_and_the_html_template(): void
+    {
+        $controller = app(StatamicFormsController::class);
+        $method = new ReflectionMethod($controller, 'editFormBlueprint');
+        $blueprint = $method->invoke($controller, Form::make('contact'));
+        $emailFields = collect($blueprint->field('email')->config()['fields']);
+        $handles = $emailFields->pluck('handle')->values();
+        $htmlPosition = $handles->search('html');
+        $byHandle = $emailFields->keyBy('handle');
+
+        $this->assertSame('mail_text', $handles[$htmlPosition - 3]);
+        $this->assertSame('custom_field_selection', $handles[$htmlPosition - 2]);
+        $this->assertSame('included_fields', $handles[$htmlPosition - 1]);
+        $this->assertSame('toggle', $byHandle['custom_field_selection']['field']['type']);
+        $this->assertSame('form_fields', $byHandle['included_fields']['field']['type']);
+        $this->assertSame('contact', $byHandle['included_fields']['field']['form']);
+        $this->assertSame(['custom_field_selection' => true], $byHandle['included_fields']['field']['if']);
+    }
+
+    public function test_the_form_fields_fieldtype_is_not_selectable_in_blueprints(): void
+    {
+        $this->assertFalse(FieldtypeRepository::find('form_fields')->selectable());
+        $this->assertFalse(FieldtypeRepository::find('form_fields')->selectableInForms());
     }
 }

@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Route;
 use Statamic\Events\FormSubmitted;
 use Statamic\Facades\Site;
 use Statamic\GraphQL\TypeRegistrar as StatamicTypeRegistrar;
+use Statamic\Http\Controllers\CP\Forms\FormBlueprintController as StatamicFormBlueprintController;
 use Statamic\Http\Controllers\CP\Forms\FormsController as StatamicFormsController;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
 use Teamnovu\Formbuilder\Console\Commands\PublishExampleFormCommand;
 use Teamnovu\Formbuilder\GraphQL\TypeRegistrar;
+use Teamnovu\Formbuilder\Http\Controllers\CP\FormBlueprintController;
 use Teamnovu\Formbuilder\Http\Controllers\CP\FormEmailPreviewController;
 use Teamnovu\Formbuilder\Http\Controllers\CP\FormsController;
 use Teamnovu\Formbuilder\Jobs\SendFormEmail;
@@ -45,6 +47,7 @@ class ServiceProvider extends AddonServiceProvider
 
         if (config('formbuilder.extend_email_configuration')) {
             $this->app->bind(StatamicFormsController::class, FormsController::class);
+            $this->app->bind(StatamicFormBlueprintController::class, FormBlueprintController::class);
         }
     }
 

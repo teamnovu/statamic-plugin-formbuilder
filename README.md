@@ -168,12 +168,59 @@ reply_to: admin@example.com
 
 A display name alone (e.g. `from: 'Example Org'`) will fail when the email is sent.
 
+### Selecting fields per email
+
+By default an email lists every form field in blueprint order. Turn on
+**Select fields individually** in an email row to choose its fields in
+**Fields in email** instead. That email then lists only those fields, in the
+order you drag them into. For example, name and address can go to one
+recipient and the content of a textarea to another.
+
+```yaml
+email:
+  -
+    to: office@example.com
+    html: vendor/formbuilder/emails/submission
+    custom_field_selection: true
+    included_fields:
+      - vorname
+      - nachname
+      - adresse
+```
+
+- The selection sets the `fields` list in `submission.blade.php`, in
+  Statamic's automatic email and in any custom template that loops over
+  `fields`. The in-CP preview shows the same fields in the same order.
+- With the toggle on and nothing selected, the email lists no fields. This suits
+  a confirmation email made only of **E-Mail Text**.
+- Attachments follow the selection: a file from an upload field that isn't
+  selected is not attached.
+- Placeholders still see every value. `to: '{{ email }}'` keeps working when
+  `email` isn't selected. The same applies to `subject` and **E-Mail Text**.
+- Spacer and display-text fields have no value and can't be selected.
+- The selection is applied by the addon's send job, so it needs
+  `use_localized_email_job` (the default).
+
+When the form's blueprint changes:
+
+- **Added fields** are not added to an existing selection. A new field never
+  reaches a recipient who should only get name and address. With the toggle off,
+  the email includes them as before.
+- **Renamed fields** stay selected in the same position. Saving the blueprint in
+  **Edit Blueprint** rewrites the handle in every email of the form.
+- **Deleted fields** are removed from the selections when the blueprint is saved.
+- If the blueprint YAML is edited by hand or deployed, a selected handle that no
+  longer exists shows as an invalid (red) item in **Fields in email**, where it
+  can be removed. When sending, it is ignored and a warning is logged.
+- Antlers placeholders such as `{{ vorname }}` in `to`, `subject` or
+  **E-Mail Text** are not rewritten on a rename.
+
 ### HTML templates
 
 | Template | Use for |
 |----------|---------|
 | `vendor/formbuilder/emails/user-submission` | Confirmation to the submitter; body comes from translatable **E-Mail Text** |
-| `vendor/formbuilder/emails/submission` | Notification to staff; lists all submitted fields |
+| `vendor/formbuilder/emails/submission` | Notification to staff; lists all submitted fields, or the [selected fields](#selecting-fields-per-email) |
 
 Example minimal config:
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Mail\Markdown;
 use Statamic\Facades\Site;
 use Statamic\Http\Controllers\Controller;
+use Teamnovu\Formbuilder\Support\EmailFieldSelection;
 use Teamnovu\Formbuilder\Support\LocalizedValueResolver;
 
 // Renders a saved email config as a full styled HTML preview, used inside the CP modal iframe.
@@ -40,7 +41,7 @@ class FormEmailPreviewController extends Controller
 
         $data = [
             'email_config' => $configForRender,
-            'fields' => collect($this->buildDummyFields($form)),
+            'fields' => EmailFieldSelection::filter(collect($this->buildDummyFields($form)), $config),
             'form' => $this->makeFormProxy($form),
             'site' => $locale,
             'locale' => $locale,
@@ -62,6 +63,7 @@ class FormEmailPreviewController extends Controller
     private function buildDummyFields($form): array
     {
         return $form->blueprint()->fields()->all()
+            ->reject(fn ($field) => $field->type() === 'spacer')
             ->map(function ($field) {
                 $display = $field->display();
                 $handle = $field->handle();
