@@ -3,7 +3,9 @@
 namespace Teamnovu\Formbuilder\Http\Controllers\CP;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Statamic\Fields\Blueprint;
+use Statamic\Http\Controllers\CP\Fields\ManagesBlueprints;
 use Statamic\Http\Controllers\CP\Forms\FormBlueprintController as StatamicFormBlueprintController;
 use Teamnovu\Formbuilder\Support\EmailFieldSelection;
 
@@ -15,32 +17,70 @@ use Teamnovu\Formbuilder\Support\EmailFieldSelection;
  * fields get `{tab}-{section}-{index}` when the page loads (ManagesBlueprints::sectionToVue()).
  * The editor keeps those ids after saving without reloading, so the id => handle map
  * of each save is remembered in the session for the next save from the same page.
+ *
+ * Every page load gets its own editor token, which the editor posts back with the
+ * blueprint, so several tabs of the same form never share or clear each other's map.
  */
 class FormBlueprintController extends StatamicFormBlueprintController
 {
+    use ManagesBlueprints;
+
+    private const EDITOR_KEY = 'formbuilder_editor';
+
+    private const MAX_EDITORS_PER_FORM = 10;
+
     public function edit($form)
     {
-        session()->forget($this->sessionKey($form));
+        $response = parent::edit($form);
 
-        return parent::edit($form);
+        // The editor keeps unknown keys of the blueprint object and sends them back on save.
+        return $response->with('blueprint', [
+            ...$this->toVueObject($form->blueprint()),
+            self::EDITOR_KEY => Str::random(32),
+        ]);
     }
 
     public function update(Request $request, $form)
     {
         $before = $form->blueprint();
         $handlesBefore = $before->fields()->all()->keys()->all();
-        $idsBefore = session()->get($this->sessionKey($form)) ?? $this->idsOnLoad($before);
+        $editor = $this->editorToken($request);
+        $idsBefore = ($editor ? session()->get($this->sessionKey($form, $editor)) : null) ?? $this->idsOnLoad($before);
 
         parent::update($request, $form);
 
         $posted = $this->postedIds($request->input('tabs', []));
         $handlesAfter = $form->blueprint()->fields()->all()->keys()->all();
         $renames = $this->renames($idsBefore, $posted, $handlesBefore, $handlesAfter);
-        $deleted = array_values(array_diff($handlesBefore, $handlesAfter, array_keys($renames)));
+        // A deleted field whose handle was taken over by a renamed one is gone too, so its selection must not carry over.
+        $deleted = array_values(array_unique(array_merge(
+            array_diff($handlesBefore, $handlesAfter, array_keys($renames)),
+            array_intersect(array_values($renames), $handlesBefore),
+        )));
 
         EmailFieldSelection::renameAndPrune($form, $renames, $deleted);
 
-        session()->put($this->sessionKey($form), $posted);
+        if ($editor) {
+            $this->rememberIds($form, $editor, $posted);
+        }
+    }
+
+    private function editorToken(Request $request): ?string
+    {
+        $token = $request->input(self::EDITOR_KEY);
+
+        return is_string($token) && preg_match('/^[A-Za-z0-9]{1,64}$/', $token) ? $token : null;
+    }
+
+    private function rememberIds($form, string $editor, array $ids): void
+    {
+        $key = $this->sessionKey($form);
+        $editors = session()->get($key, []);
+
+        unset($editors[$editor]);
+        $editors[$editor] = $ids;
+
+        session()->put($key, array_slice($editors, -self::MAX_EDITORS_PER_FORM, null, true));
     }
 
     // Same id scheme as ManagesBlueprints::sectionToVue().
@@ -80,15 +120,18 @@ class FormBlueprintController extends StatamicFormBlueprintController
 
     /**
      * A rename is a field id whose handle changed, where the old handle is gone and the
-     * new one did not exist before. When an unchanged handle sits under another id, the
-     * ids no longer match the saved blueprint, so no renames are trusted for this save.
+     * new one did not exist before or belonged to a field that was deleted in the same save.
+     * When a handle sits under another id that is still present, the ids no longer match
+     * the saved blueprint, so no renames are trusted for this save.
      */
     private function renames(array $idsBefore, array $posted, array $handlesBefore, array $handlesAfter): array
     {
         $idsByHandleBefore = array_flip($idsBefore);
 
         foreach ($posted as $id => $handle) {
-            if (isset($idsByHandleBefore[$handle]) && (string) $idsByHandleBefore[$handle] !== (string) $id) {
+            $owner = $idsByHandleBefore[$handle] ?? null;
+
+            if ($owner !== null && (string) $owner !== (string) $id && array_key_exists($owner, $posted)) {
                 return [];
             }
         }
@@ -102,7 +145,10 @@ class FormBlueprintController extends StatamicFormBlueprintController
                 continue;
             }
 
-            if (in_array($old, $handlesBefore, true) && ! in_array($old, $handlesAfter, true) && ! in_array($new, $handlesBefore, true)) {
+            $newIsFree = ! in_array($new, $handlesBefore, true)
+                || (isset($idsByHandleBefore[$new]) && ! array_key_exists($idsByHandleBefore[$new], $posted));
+
+            if (in_array($old, $handlesBefore, true) && ! in_array($old, $handlesAfter, true) && $newIsFree) {
                 $renames[$old] = $new;
             }
         }
@@ -110,8 +156,8 @@ class FormBlueprintController extends StatamicFormBlueprintController
         return $renames;
     }
 
-    private function sessionKey($form): string
+    private function sessionKey($form, ?string $editor = null): string
     {
-        return 'formbuilder.blueprint_field_ids.'.$form->handle();
+        return 'formbuilder.blueprint_field_ids.'.$form->handle().($editor ? '.'.$editor : '');
     }
 }

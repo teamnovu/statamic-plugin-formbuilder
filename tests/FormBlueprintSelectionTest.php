@@ -44,6 +44,29 @@ class FormBlueprintSelectionTest extends TestCase
         ], $this->selections());
     }
 
+    public function test_a_field_can_be_renamed_to_the_handle_of_a_field_deleted_in_the_same_save(): void
+    {
+        $this->saveForm('blueprint_selection_test', [
+            'first_name' => ['type' => 'input_text'],
+            'name' => ['type' => 'input_text'],
+            'email' => ['type' => 'input_email'],
+        ], [
+            ['to' => 'a@example.test', 'custom_field_selection' => true, 'included_fields' => ['email', 'first_name']],
+            ['to' => 'b@example.test', 'custom_field_selection' => true, 'included_fields' => ['name', 'email']],
+        ]);
+
+        $payload = $this->editorPayload();
+        $payload = $this->deleteField($payload, 'name');
+        $payload = $this->renameField($payload, 'first_name', 'name');
+
+        $this->saveBlueprint($payload);
+
+        $this->assertSame([
+            ['email', 'name'],
+            ['email'],
+        ], $this->selections());
+    }
+
     public function test_added_fields_are_not_added_to_a_selection(): void
     {
         $payload = $this->editorPayload();
@@ -101,12 +124,42 @@ class FormBlueprintSelectionTest extends TestCase
         ], $this->selections());
     }
 
-    private function editorPayload(): array
+    public function test_opening_the_editor_in_a_second_tab_does_not_break_renames_of_the_first(): void
+    {
+        $first = $this->editorPayload('tabone');
+        $fields = &$first['tabs'][0]['sections'][0]['fields'];
+        $fields = array_reverse($fields);
+        unset($fields);
+
+        $this->saveBlueprint($first);
+
+        // Loading the editor again must leave the map of the first tab alone.
+        $this->get(cp_route('blueprints.forms.edit', 'blueprint_selection_test'))->assertOk();
+
+        $first = $this->renameField($first, 'vorname', 'first_name');
+
+        $this->saveBlueprint($first);
+
+        $this->assertSame([
+            ['nachricht', 'first_name', 'nachname'],
+            ['email', 'first_name'],
+            null,
+        ], $this->selections());
+    }
+
+    public function test_the_edit_page_hands_the_editor_a_token(): void
+    {
+        $this->get(cp_route('blueprints.forms.edit', 'blueprint_selection_test'))
+            ->assertInertia(fn ($page) => $page->has('blueprint.formbuilder_editor'));
+    }
+
+    private function editorPayload(string $editor = 'editorone'): array
     {
         $controller = app(StatamicFormBlueprintController::class);
         $method = new ReflectionMethod(StatamicFormBlueprintController::class, 'toVueObject');
 
-        return $method->invoke($controller, Form::find('blueprint_selection_test')->blueprint());
+        return $method->invoke($controller, Form::find('blueprint_selection_test')->blueprint())
+            + ['formbuilder_editor' => $editor];
     }
 
     private function renameField(array $payload, string $from, string $to): array
