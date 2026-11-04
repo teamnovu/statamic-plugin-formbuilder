@@ -24,6 +24,7 @@ class InputEmail extends Fieldtype
     {
         return FieldConfig::createItems([
             'floating_label' => FieldConfig::floatingLabel(),
+            'autocomplete' => FieldConfig::autocomplete(),
         ], placeholder: true);
     }
 
