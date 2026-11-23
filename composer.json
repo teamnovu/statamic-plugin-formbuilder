@@ -1,59 +1,59 @@
 {
-    "name": "teamnovu/formbuilder",
-    "description": "A curated, multilingual form builder for Statamic 6.",
-    "version": "1.3.2",
-    "authors": [
-        {
-            "name": "Janis Wanger",
-            "email": "janis.wanger@novu.ch"
-        },
-        {
-            "name": "Kyle Werner",
-            "email": "kyle.werner@novu.ch"
-        },
-        {
-            "name": "Oguz Han Asnaz",
-            "email": "oguzhan.asnaz@novu.ch"
-        }
-    ],
-    "type": "library",
-    "license": "proprietary",
-    "autoload": {
-        "psr-4": {
-            "Teamnovu\\Formbuilder\\": "src"
-        }
+  "name": "teamnovu/formbuilder",
+  "description": "A curated, multilingual form builder for Statamic 6.",
+  "version": "1.4.0",
+  "authors": [
+    {
+      "name": "Janis Wanger",
+      "email": "janis.wanger@novu.ch"
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Teamnovu\\Formbuilder\\Tests\\": "tests"
-        }
+    {
+      "name": "Kyle Werner",
+      "email": "kyle.werner@novu.ch"
     },
-    "require": {
-        "php": "^8.2",
-        "statamic/cms": "^6.0"
+    {
+      "name": "Oguz Han Asnaz",
+      "email": "oguzhan.asnaz@novu.ch"
+    }
+  ],
+  "type": "library",
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "Teamnovu\\Formbuilder\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Teamnovu\\Formbuilder\\Tests\\": "tests"
+    }
+  },
+  "require": {
+    "php": "^8.2",
+    "statamic/cms": "^6.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^10.8"
+  },
+  "config": {
+    "allow-plugins": {
+      "pixelfear/composer-dist-plugin": true
+    }
+  },
+  "extra": {
+    "statamic": {
+      "name": "Formbuilder",
+      "description": "Curated multilingual forms, localized emails, and CP submission views"
     },
-    "require-dev": {
-        "orchestra/testbench": "^10.8"
+    "laravel": {
+      "providers": [
+        "Teamnovu\\Formbuilder\\ServiceProvider"
+      ]
     },
-    "config": {
-        "allow-plugins": {
-            "pixelfear/composer-dist-plugin": true
-        }
-    },
-    "extra": {
-        "statamic": {
-            "name": "Formbuilder",
-            "description": "Curated multilingual forms, localized emails, and CP submission views"
-        },
-        "laravel": {
-            "providers": [
-                "Teamnovu\\Formbuilder\\ServiceProvider"
-            ]
-        },
-        "download-dist": {
-            "url": "https://github.com/teamnovu/statamic-plugin-formbuilder/releases/download/v{$version}/dist.tar.gz",
-            "path": "resources/dist/build"
-        }
-    },
-    "prefer-stable": true
+    "download-dist": {
+      "url": "https://github.com/teamnovu/statamic-plugin-formbuilder/releases/download/v{$version}/dist.tar.gz",
+      "path": "resources/dist/build"
+    }
+  },
+  "prefer-stable": true
 }
