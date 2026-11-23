@@ -78,6 +78,7 @@ class InputPhone extends Fieldtype
                 ],
                 'force_in_config' => true,
             ],
+            'autocomplete' => FieldConfig::autocomplete(),
         ], placeholder: true);
     }
 

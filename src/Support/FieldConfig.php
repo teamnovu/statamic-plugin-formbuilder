@@ -62,6 +62,45 @@ class FieldConfig
         ];
     }
 
+    /**
+     * HTML autocomplete tokens offered in the CP: `off` first, then the MDN order
+     * grouped by name, login, organisation, address, payment, personal and contact.
+     *
+     * @var list<string>
+     */
+    private const AUTOCOMPLETE_TOKENS = [
+        'off',
+        'name', 'honorific-prefix', 'given-name', 'additional-name', 'family-name', 'honorific-suffix', 'nickname',
+        'username', 'new-password', 'current-password', 'one-time-code',
+        'organization-title', 'organization',
+        'street-address', 'address-line1', 'address-line2', 'address-line3',
+        'address-level4', 'address-level3', 'address-level2', 'address-level1',
+        'country', 'country-name', 'postal-code',
+        'cc-name', 'cc-given-name', 'cc-additional-name', 'cc-family-name', 'cc-number',
+        'cc-exp', 'cc-exp-month', 'cc-exp-year', 'cc-csc', 'cc-type',
+        'transaction-currency', 'transaction-amount',
+        'language', 'bday', 'bday-day', 'bday-month', 'bday-year', 'sex', 'url', 'photo',
+        'tel', 'tel-country-code', 'tel-national', 'tel-area-code',
+        'tel-local', 'tel-local-prefix', 'tel-local-suffix', 'tel-extension',
+        'email', 'impp',
+    ];
+
+    public static function autocomplete(): array
+    {
+        return [
+            'display' => __('formbuilder::form.autocomplete.display'),
+            'instructions' => __('formbuilder::form.autocomplete.instruction'),
+            'type' => 'select',
+            'searchable' => true,
+            'clearable' => true,
+            'options' => collect(self::AUTOCOMPLETE_TOKENS)
+                ->mapWithKeys(fn (string $token) => [
+                    $token => __("formbuilder::form.autocomplete.options.{$token}")." ({$token})",
+                ])
+                ->all(),
+        ];
+    }
+
     public static function characterLimit(): array
     {
         return [
