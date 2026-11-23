@@ -39,9 +39,7 @@ class ServiceProvider extends AddonServiceProvider
 
         $this->mergeConfigFrom(__DIR__.'/../config/formbuilder.php', 'formbuilder');
 
-        if (config('formbuilder.resolve_statamic_links_in_graphql')) {
-            $this->app->bind(StatamicTypeRegistrar::class, TypeRegistrar::class);
-        }
+        $this->app->bind(StatamicTypeRegistrar::class, TypeRegistrar::class);
 
         if (config('formbuilder.extend_email_configuration')) {
             $this->app->bind(StatamicFormsController::class, FormsController::class);

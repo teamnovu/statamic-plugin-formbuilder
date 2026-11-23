@@ -2,37 +2,30 @@
 
 namespace Teamnovu\Formbuilder\GraphQL\Types;
 
-use Illuminate\Support\Arr;
 use Statamic\Facades\Data;
 use Teamnovu\Formbuilder\Support\DateBoundaryNormalizer;
 
-/**
- * Extends Statamic's GraphQL Field type to resolve statamic:// links in field configs.
- *
- * Statamic stores internal links (e.g. to entries) as "statamic://entry::uuid" in field configs
- * (e.g. in translatable_bard values inside input_checkboxes options). These are never resolved
- * by Statamic's default GraphQL pipeline because field configs are returned as raw scalar arrays.
- *
- * This type overrides the "config" resolver to recursively replace any statamic:// reference
- * with the actual URL before the config is returned. All other field types are unaffected
- * since the replacement only triggers on strings containing statamic://.
- *
- * Registered via the addon's TypeRegistrar, which extends Statamic's registrar so our
- * type is added after Statamic's own type registration (which would otherwise overwrite ours).
- * Only applies to fields in form blueprints (FormType / SectionType use this Field type).
- */
 class FieldType extends \Statamic\GraphQL\Types\FieldType
 {
     public function fields(): array
     {
         $fields = parent::fields();
 
-        $fields['config']['resolve'] = function ($field) {
-            $keys = $field->fieldtype()->configFields()->all()->keys()->all();
-            $config = Arr::only($field->config(), $keys);
-            $config = $this->normalizeDateBoundaries($config);
+        $resolveConfig = $fields['config']['resolve'];
+        $fields['config']['resolve'] = function ($field) use ($resolveConfig) {
+            $config = $resolveConfig($field);
 
-            return $this->resolveStatamicLinks($config);
+            if (config('formbuilder.resolve_statamic_links_in_graphql')) {
+                $config = $this->resolveStatamicLinks($this->normalizeDateBoundaries($config));
+            }
+
+            // Conditions can compare raw statamic:// values, so keep them outside link resolution.
+            $conditions = $field->conditions();
+            if ($conditions !== []) {
+                $config['conditions'] = $conditions;
+            }
+
+            return $config;
         };
 
         return $fields;
