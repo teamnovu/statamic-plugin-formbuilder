@@ -3,6 +3,7 @@
 namespace Teamnovu\Formbuilder\Http\Controllers\CP;
 
 use Statamic\Http\Controllers\CP\Forms\FormsController as StatamicFormsController;
+use Teamnovu\Formbuilder\Support\EmailFieldSelection;
 
 use function Statamic\trans as __;
 
@@ -68,6 +69,8 @@ class FormsController extends StatamicFormsController
                     ],
                 ];
 
+                array_push($customized, ...$this->fieldSelectionFields($formHandle));
+
                 $field['field']['instructions'] = __('formbuilder::form.email_config.html_instruction');
             }
 
@@ -86,6 +89,30 @@ class FormsController extends StatamicFormsController
         ];
 
         return $customized;
+    }
+
+    private function fieldSelectionFields(string $formHandle): array
+    {
+        return [
+            [
+                'handle' => EmailFieldSelection::TOGGLE,
+                'field' => [
+                    'type' => 'toggle',
+                    'display' => __('formbuilder::form.email_config.custom_field_selection_display'),
+                    'instructions' => __('formbuilder::form.email_config.custom_field_selection_instruction'),
+                ],
+            ],
+            [
+                'handle' => EmailFieldSelection::FIELDS,
+                'field' => [
+                    'type' => 'form_fields',
+                    'form' => $formHandle,
+                    'display' => __('formbuilder::form.email_config.included_fields_display'),
+                    'instructions' => __('formbuilder::form.email_config.included_fields_instruction'),
+                    'if' => [EmailFieldSelection::TOGGLE => true],
+                ],
+            ],
+        ];
     }
 
     private function mailPreviewModalHtml(string $formHandle): string

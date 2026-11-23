@@ -28,12 +28,23 @@ return [
         'from_instruction' => 'Absender-Adresse. RFC-Format: Anzeigename &lt;email@beispiel.ch&gt; oder nur email@beispiel.ch. Nur ein Anzeigename ist ungültig.',
         'reply_to_instruction' => 'Antwort-an-Adresse(n), kommagetrennt. RFC-Format: Anzeigename &lt;email@beispiel.ch&gt; oder nur email@beispiel.ch.',
         'subject_instruction' => 'Betreffzeile. Antlers-Platzhalter mit doppelten geschweiften Klammern verwenden, z. B. {{ vorname }}.',
-        'html_instruction' => 'Blade-Vorlage für diese E-Mail. Wählen Sie vendor/formbuilder/emails/user-submission (Bestätigung an Absender/in; nutzt den E-Mail Text oben) oder vendor/formbuilder/emails/submission (Benachrichtigung ans Team; listet alle Felder).',
+        'html_instruction' => 'Blade-Vorlage für diese E-Mail. Wählen Sie vendor/formbuilder/emails/user-submission (Bestätigung an Absender/in; nutzt den E-Mail Text oben) oder vendor/formbuilder/emails/submission (Benachrichtigung ans Team; listet alle Felder oder nur die oben ausgewählten).',
         'markdown_instruction' => 'Standardmässig aktiviert für Formbuilder-Vorlagen. Nur deaktivieren, wenn eine einfache Blade-Ansicht ohne mail::message verwendet wird.',
+        'custom_field_selection_display' => 'Felder einzeln auswählen',
+        'custom_field_selection_instruction' => 'Aus: Die E-Mail listet alle Formularfelder in der Reihenfolge des Blueprints. Ein: Sie listet nur die ausgewählten Felder, in deren Reihenfolge. Platzhalter wie {{ email }} in Empfänger, Betreff und E-Mail Text können weiterhin alle Felder verwenden.',
+        'included_fields_display' => 'Felder in der E-Mail',
+        'included_fields_instruction' => 'Die E-Mail listet die ausgewählten Felder in der gewählten Reihenfolge auf.',
         'mail_preview_display' => 'Vorschau',
         'mail_preview_instruction' => 'In der Vorschau werden nur gespeicherte Werte angezeigt.',
         'mail_preview_button' => 'E-Mail Vorschau',
         'mail_preview_modal_title' => 'E-Mail Vorschau',
+    ],
+
+    'form_fields' => [
+        'title' => 'Formularfelder',
+        'column_title' => 'Feld',
+        'column_handle' => 'Handle',
+        'column_type' => 'Typ',
     ],
 
     'title' => [

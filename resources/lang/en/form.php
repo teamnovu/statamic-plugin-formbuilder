@@ -28,12 +28,23 @@ return [
         'from_instruction' => 'Sender address. RFC format: Display Name &lt;email@example.com&gt; or email@example.com alone. A display name without an email address is invalid.',
         'reply_to_instruction' => 'Reply-to address(es), comma-separated. RFC format: Display Name &lt;email@example.com&gt; or email@example.com alone.',
         'subject_instruction' => 'Email subject line. Use Antlers placeholders with double braces, e.g. {{ vorname }}.',
-        'html_instruction' => 'Blade template for this email. Choose vendor/formbuilder/emails/user-submission (confirmation to the submitter; uses E-Mail Text above) or vendor/formbuilder/emails/submission (notification to staff; lists all fields).',
+        'html_instruction' => 'Blade template for this email. Choose vendor/formbuilder/emails/user-submission (confirmation to the submitter; uses E-Mail Text above) or vendor/formbuilder/emails/submission (notification to staff; lists all fields, or only the fields selected above).',
         'markdown_instruction' => 'Enabled by default for formbuilder templates. Leave on unless you use a plain Blade view without mail::message.',
+        'custom_field_selection_display' => 'Select fields individually',
+        'custom_field_selection_instruction' => 'When off, the email lists all form fields in blueprint order. When on, it lists only the selected fields, in their order. Placeholders such as {{ email }} in recipient, subject and E-Mail Text can still use every field.',
+        'included_fields_display' => 'Fields in email',
+        'included_fields_instruction' => 'The email lists the selected fields in the selected order.',
         'mail_preview_display' => 'Preview',
         'mail_preview_instruction' => 'Only saved values will be displayed in the preview.',
         'mail_preview_button' => 'Email Preview',
         'mail_preview_modal_title' => 'Email Preview',
+    ],
+
+    'form_fields' => [
+        'title' => 'Form Fields',
+        'column_title' => 'Field',
+        'column_handle' => 'Handle',
+        'column_type' => 'Type',
     ],
 
     'title' => [
